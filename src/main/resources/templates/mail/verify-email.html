@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>안녕하세요. <span th:text="${name}"></span>님</p>
+    <h2 th:text="${message}"></h2>
+    <div>
+        <a th:href="${link}" th:text="${linkName}">Link</a>
+        <p>링크가 동작하지 않을 경우에는 아래 URL을 웹 브라우저에 복사해서 붙여 넣으세요.</p>
+        <small th:text="${link}">Link</small>
+    </div>
+</body>
+</html>

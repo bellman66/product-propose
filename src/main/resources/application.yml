@@ -1,0 +1,71 @@
+
+# Spring Default =======================================================================================================
+
+spring:
+  datasource:
+    hikari:
+      connection-timeout: 15000
+      maximum-pool-size: 10
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: true
+    show_sql: true
+
+  output:
+    ansi:
+      enabled: always
+
+  profiles:
+    active: dev
+#    active: prod
+
+# Logging Level
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+# Server Encoding
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# example
+# Static Props Values
+app:
+  props:
+    file:
+      publicPath: INPUT-DATA
+    jwt:
+      secretkey: "TEMPLATE_SECRET_ENCRYPTED_KEY"
+      issur: "TemplateIssur"
+      claimId: "email"
+    mail:
+      host: email-smtp.us-east-1.amazonaws.com
+      username: AKIA2GA43SQ4NQSMZLTY
+      password: BGbbbn7BK13mbUB7sr8kHkVQ+Ex05v6IjWI2xcFKFLzG
+      protocol: smtp
+      port: 465
+      auth: true
+      enable: true
+      required: true
+    kakao:
+      restApiKey: INPUT-DATA
+      javaScriptKey: INPUT-DATA
+      redirectUrl: INPUT-DATA
+      appAdminKey: INPUT-DATA
+      logoutUrl: INPUT-DATA
+    aws:
+      key:
+        accessKey: "AKIA2GA43SQ4ECH2L46U"
+        secretKey: "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"
+      path:
+        targetBucket: INPUT-DATA
+        localUrl: INPUT-DATA

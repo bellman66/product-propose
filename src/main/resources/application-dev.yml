@@ -1,0 +1,16 @@
+
+# Spring Development =======================================================================================================
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql:// {Test-DataBase-Url} :5432/
+    username: INPUT-DATA
+    password: INPUT-DATA
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  thymeleaf:
+    cache: false
