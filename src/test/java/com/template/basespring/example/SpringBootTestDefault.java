@@ -1,8 +1,7 @@
 package com.template.basespring.example;
 
 import com.template.basespring.domain.account.service.AccountService;
-import com.template.basespring.domain.account.dto.request.SignUpRequest;
-import com.template.basespring.domain.account.entity.Account;
+import com.template.basespring.domain.account.web.dto.request.SignUpRequest;
 import com.template.basespring.global.utils.AccountTestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

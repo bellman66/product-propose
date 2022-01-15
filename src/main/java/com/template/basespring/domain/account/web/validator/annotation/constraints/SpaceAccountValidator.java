@@ -1,9 +1,7 @@
-package com.template.basespring.domain.account.annotation.validator.constraints;
+package com.template.basespring.domain.account.web.validator.annotation.constraints;
 
-import com.template.basespring.domain.account.annotation.validator.SpaceAccountCheck;
+import com.template.basespring.domain.account.web.validator.annotation.SpaceAccountCheck;
 import com.template.basespring.global.annotation.constraints.BaseAccountValidator;
-import com.template.basespring.global.exception.dto.CommonException;
-import com.template.basespring.global.exception.dto.enums.ErrorCode;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

@@ -1,6 +1,6 @@
 package com.template.basespring.global.utils;
 
-import com.template.basespring.domain.account.dto.request.SignUpRequest;
+import com.template.basespring.domain.account.web.dto.request.SignUpRequest;
 import com.template.basespring.domain.account.entity.Account;
 import com.template.basespring.domain.account.entity.enums.AccountType;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.template.basespring.domain.account.annotation.validator;
+package com.template.basespring.domain.account.web.validator.annotation;
 
-import com.template.basespring.domain.account.annotation.validator.constraints.SpaceAccountValidator;
+import com.template.basespring.domain.account.web.validator.annotation.constraints.SpaceAccountValidator;
 
 import javax.validation.Constraint;
 import java.lang.annotation.*;

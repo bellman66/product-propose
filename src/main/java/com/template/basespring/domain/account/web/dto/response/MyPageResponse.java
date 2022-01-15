@@ -1,4 +1,4 @@
-package com.template.basespring.domain.account.dto.response;
+package com.template.basespring.domain.account.web.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.template.basespring.domain.notification.entity;
 
-import com.template.basespring.domain.notification.dto.request.NotificationRequest;
+import com.template.basespring.domain.notification.web.dto.request.NotificationRequest;
 import com.template.basespring.domain.notification.entity.enums.NotificationType;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.template.basespring.domain.notification.dto.response;
+package com.template.basespring.domain.notification.web.dto.response;
 
 import com.template.basespring.domain.notification.entity.enums.NotificationType;
 import lombok.AllArgsConstructor;

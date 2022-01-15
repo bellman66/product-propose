@@ -1,12 +1,11 @@
 package com.template.basespring.domain.account.service;
 
-import com.template.basespring.domain.account.dto.request.SignUpRequest;
+import com.template.basespring.domain.account.web.dto.request.SignUpRequest;
 import com.template.basespring.domain.account.entity.Account;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface AccountService {
+public interface AccountService extends UserDetailsService {
 
-    UserDetails loadUserByUsername(String email);
     Account createNewAccount(SignUpRequest signUpRequest);
     void login(Account account, String password);
 }

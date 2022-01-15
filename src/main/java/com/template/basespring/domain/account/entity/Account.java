@@ -1,6 +1,6 @@
 package com.template.basespring.domain.account.entity;
 
-import com.template.basespring.domain.account.dto.request.*;
+import com.template.basespring.domain.account.web.dto.request.*;
 import com.template.basespring.domain.account.entity.enums.AccountType;
 import lombok.*;
 import org.hibernate.annotations.Type;

@@ -1,4 +1,4 @@
-package com.template.basespring.domain.account.dto.request;
+package com.template.basespring.domain.account.web.dto.request;
 
 import lombok.Data;
 import com.template.basespring.domain.account.entity.Account;

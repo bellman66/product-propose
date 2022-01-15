@@ -1,4 +1,4 @@
-package com.template.basespring.domain.account.dto.response;
+package com.template.basespring.domain.account.web.dto.response;
 
 import com.template.basespring.domain.account.entity.Account;
 import com.template.basespring.domain.account.entity.enums.AccountType;

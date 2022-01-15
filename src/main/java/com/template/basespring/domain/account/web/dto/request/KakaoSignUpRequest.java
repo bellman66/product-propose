@@ -1,4 +1,4 @@
-package com.template.basespring.domain.account.dto.request;
+package com.template.basespring.domain.account.web.dto.request;
 
 import com.template.basespring.domain.account.entity.enums.AccountType;
 import com.template.basespring.global.utils.kakao.dto.KakaoAccountInfoDto;

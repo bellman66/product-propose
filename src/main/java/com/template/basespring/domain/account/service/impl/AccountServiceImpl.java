@@ -1,6 +1,6 @@
 package com.template.basespring.domain.account.service.impl;
 
-import com.template.basespring.domain.account.dto.request.SignUpRequest;
+import com.template.basespring.domain.account.web.dto.request.SignUpRequest;
 import com.template.basespring.domain.account.entity.Account;
 import com.template.basespring.domain.account.repository.AccountRepository;
 import com.template.basespring.domain.account.service.AccountService;

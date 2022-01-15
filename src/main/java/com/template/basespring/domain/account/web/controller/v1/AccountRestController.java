@@ -1,4 +1,4 @@
-package com.template.basespring.domain.account.controller.v1;
+package com.template.basespring.domain.account.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.template.basespring.domain.account.service.AccountService;
