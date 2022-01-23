@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.template'
+group = 'com.product'
 version = '0.0.1'
 sourceCompatibility = '11'
 
