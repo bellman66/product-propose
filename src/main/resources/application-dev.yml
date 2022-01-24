@@ -3,10 +3,10 @@
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql:// {Test-DataBase-Url} :5432/
-    username: INPUT-DATA
-    password: INPUT-DATA
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/product-propose
+    username: sa
+    password:
 
   jpa:
     hibernate:

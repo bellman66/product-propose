@@ -2,7 +2,6 @@ package com.product.propose.example;
 
 import com.product.propose.global.utils.AccountTestUtil;
 import com.product.propose.domain.account.service.AccountService;
-import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,8 @@ public class SpringBootTestDefault {
 
     @BeforeEach
     void before() {
-        SignUpRequest signupRequest = accountTestUtil.getSignupForm("test");
-        accountService.createNewAccount(signupRequest);
+//        SignUpRequest signupRequest = accountTestUtil.getSignupForm("test");
+//        accountService.createNewAccount(signupRequest);
     }
 
     @Test

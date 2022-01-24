@@ -2,7 +2,7 @@ package com.product.propose.example;
 
 import com.product.propose.global.config.TestConfig;
 import com.product.propose.global.utils.AccountTestUtil;
-import com.product.propose.domain.account.entity.Account;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class DataJpaTestDefault {
     void getAccount() { // Repository Test
 
         // Given
-        Account account = accountTestUtil.getTestAccount();
+        Account account = null;
 
         // When
         Account result = accountRepository.save(account);

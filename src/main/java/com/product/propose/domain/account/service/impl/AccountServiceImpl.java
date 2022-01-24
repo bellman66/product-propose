@@ -1,8 +1,9 @@
 package com.product.propose.domain.account.service.impl;
 
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
+import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
-import com.product.propose.domain.account.entity.Account;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.domain.account.service.AccountService;
 import com.product.propose.global.data.security.UserAccount;
@@ -44,14 +45,17 @@ public class AccountServiceImpl implements AccountService {
 
     // ===== ===== ===== ===== ===== method ===== ===== ===== ===== =====
 
-    // C
-    @Transactional
-    public Account createNewAccount(SignUpRequest signUpRequest) {
-        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
-        Account newAccount = Account.createAccount(signUpRequest, encodedPassword);
 
-        newAccount.completeSignUp();
-        return accountRepository.save(newAccount);
+    @Override
+    @Transactional
+    public Account signUp(SignUpRequest aRequest) {
+        AccountAssert.notExist(aRequest.getSignUpEmail());
+
+        Account signUpAccount = Account
+                .createAccount(aRequest.getAccountCreateForm())
+                .signUp(aRequest.getLinkedAuthCreateForm(),
+                        aRequest.getUserProfileCreateForm());
+        return accountRepository.save(signUpAccount);
     }
 
     // R

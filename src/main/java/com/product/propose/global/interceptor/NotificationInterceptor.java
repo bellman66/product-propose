@@ -1,8 +1,7 @@
 package com.product.propose.global.interceptor;
 
 import com.product.propose.global.data.security.UserAccount;
-import com.product.propose.domain.account.entity.Account;
-import com.product.propose.domain.notification.repository.NotificationRepository;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @RequiredArgsConstructor
 public class NotificationInterceptor implements HandlerInterceptor {
-
-    // repository
-    private final NotificationRepository notificationRepository;
 
     // ===== ===== ===== ===== ===== method ===== ===== ===== ===== =====
 

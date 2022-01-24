@@ -1,7 +1,7 @@
 package com.product.propose.global.event.log.dto;
 
 import com.product.propose.global.exception.dto.enums.ErrorCode;
-import com.product.propose.domain.account.entity.Account;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.global.exception.dto.CommonException;
 import lombok.Data;
 import lombok.NoArgsConstructor;

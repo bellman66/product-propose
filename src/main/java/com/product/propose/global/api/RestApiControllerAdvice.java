@@ -1,7 +1,7 @@
 package com.product.propose.global.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.account.entity.Account;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.global.event.log.dto.ExceptionEvent;
 import com.product.propose.global.exception.dto.CommonException;
 import org.springframework.context.ApplicationEventPublisher;

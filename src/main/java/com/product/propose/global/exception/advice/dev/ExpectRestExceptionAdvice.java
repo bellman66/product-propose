@@ -3,7 +3,7 @@ package com.product.propose.global.exception.advice.dev;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.global.api.RestApiControllerAdvice;
 import com.product.propose.global.utils.error.ErrorUtil;
-import com.product.propose.domain.account.entity.Account;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.global.annotation.CurrentAccount;
 import com.product.propose.global.exception.dto.CommonException;
 import com.product.propose.global.exception.dto.enums.ErrorCode;

@@ -25,6 +25,8 @@ public enum ErrorCode {
 
     ACCOUNT_NOT_EQUALS("1011", "유저가 서로 일치하지 않습니다.", null),
     VERIFICATION_NOT_CORRECT("1012", "Verification Not Correct", null),
+    ACCOUNT_EXISTS("1013", "유저 이미 존재합니다.", null),
+
 
     // account - jwt (1200)
     JWT_TOKEN_EXPIRED("1201", "토큰이 만료되었습니다.", null),

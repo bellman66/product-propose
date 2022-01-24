@@ -1,9 +1,7 @@
 package com.product.propose.example;
 
 import com.product.propose.domain.account.service.AccountService;
-import com.product.propose.domain.account.web.dto.request.SignUpRequest;
-import com.product.propose.domain.account.entity.Account;
-import com.product.propose.domain.account.entity.enums.AccountType;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +39,7 @@ public class UnitTestDefault {
         // Given
         //  Service 내부에 있는 메서드중 값을 반환하는 것들을 미리 정해줌 (stub)
         Long accountId = 1L; // 사전입력
-        Account account = getTestAccount();
+        Account account = null;
         ReflectionTestUtils.setField(account, "id", accountId); // ID setting
 
 //        Mockito.when(accountRepository.findByIdAndExited(any(Long.class), any(boolean.class))).thenReturn(account);
@@ -54,24 +52,24 @@ public class UnitTestDefault {
 //                .isNotNull();
     }
 
-    SignUpRequest getSignupForm() {
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setAccountType(AccountType.REGULAR);
-        signUpRequest.setEmail("tiltwoone@gmail.com");
-        signUpRequest.setPassword("12345");
-        signUpRequest.setPasswordConfirm("12345");
-        signUpRequest.setName("til21");
-        signUpRequest.setKakaoAuthAgreement(false);
-        signUpRequest.setEmailReceiveAgreement(false);
-        signUpRequest.setPhoneReceiveAgreement(false);
-        return signUpRequest;
-    }
-
-    Account getTestAccount() {
-        SignUpRequest signUpRequest = getSignupForm();
-        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
-        Account newAccount = Account.createAccount(signUpRequest, encodedPassword);
-        newAccount.completeSignUp();
-        return newAccount;
-    }
+//    SignUpRequest getSignupForm() {
+//        SignUpRequest signUpRequest = new SignUpRequest();
+//        signUpRequest.setAccountType(AccountType.REGULAR);
+//        signUpRequest.setEmail("tiltwoone@gmail.com");
+//        signUpRequest.setPassword("12345");
+//        signUpRequest.setPasswordConfirm("12345");
+//        signUpRequest.setName("til21");
+//        signUpRequest.setKakaoAuthAgreement(false);
+//        signUpRequest.setEmailReceiveAgreement(false);
+//        signUpRequest.setPhoneReceiveAgreement(false);
+//        return signUpRequest;
+//    }
+//
+//    Account getTestAccount() {
+//        SignUpRequest signUpRequest = getSignupForm();
+//        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+//        Account newAccount = Account.createAccount(signUpRequest, encodedPassword);
+//        newAccount.completeSignUp();
+//        return newAccount;
+//    }
 }
