@@ -17,45 +17,24 @@ public class RestApiController {
         this.objectMapper = objectMapper;
     }
 
-    // Case 1. Fail (Spring Security Exception)
-
-    // Case 2. Fail (Valid Error)
-    //  return
-    //      success: false,
-    //      data: {
-    //          getField(): getDefaultMessage(),
-    //          ...
-    //      }
     protected ResponseEntity<String> createFailRestResponse(Map<String, Object> data) {
-        String responseBody = convertToBodyStr(data);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(convertToBodyStr(data));
     }
 
-    // Case 4. Success
-    //  return
-    //      success: true,
-    //      data: {
-    //          account: {
-    //              email: "hgd@gmail.com",
-    //              name: "홍길동",
-    //              ...
-    //          },
-    //          ...
-    //      }
     protected ResponseEntity<String> createRestResponse(Map<String, Object> data) {
-        String responseBody = convertToBodyStr(data);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(convertToBodyStr(data));
     }
 
     private String convertToBodyStr(Map<String, Object> restApiResponse) {
-        String responseBody;
-
         try {
-            responseBody = objectMapper.writeValueAsString(restApiResponse);
+            return objectMapper.writeValueAsString(restApiResponse);
         }
         catch (JsonProcessingException exception) {
             throw new CommonException(ErrorCode.JSON_PROCESS_FAIL, exception);
         }
-        return responseBody;
     }
 }

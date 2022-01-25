@@ -1,22 +1,17 @@
 package com.product.propose.domain.account.web.dto.request;
 
-import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
-import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
-import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
-import lombok.Data;
+import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SignUpRequest {
 
     @NotNull
-    private final AccountCreateForm accountCreateForm;
-    @NotNull
-    private final LinkedAuthCreateForm linkedAuthCreateForm;
-    @NotNull
-    private final UserProfileCreateForm userProfileCreateForm;
-
-    public String getSignUpEmail() {
-        return accountCreateForm.getEmail();
-    }
+    private SignUpData signUpData;
 }

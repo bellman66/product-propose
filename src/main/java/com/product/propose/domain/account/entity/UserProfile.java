@@ -1,6 +1,5 @@
 package com.product.propose.domain.account.entity;
 
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
 import lombok.*;
 import org.hibernate.annotations.Cache;

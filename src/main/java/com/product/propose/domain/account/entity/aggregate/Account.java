@@ -3,8 +3,7 @@ package com.product.propose.domain.account.entity.aggregate;
 import com.product.propose.domain.account.entity.LinkedAuth;
 import com.product.propose.domain.account.entity.UserProfile;
 import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
-import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
-import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
+import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -50,22 +50,24 @@ public class Account extends AbstractAggregateRoot<Account> {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LinkedAuth> linkedAuthSet = new HashSet<>();
 
-    // password
-    public static Account createAccount(AccountCreateForm createForm) {
-        return Account.builder()
-                .email(createForm.getEmail())
-                .nickName(createForm.getName())
+    // Create User - SignUp
+    public static Account signUp(SignUpData data) {
+        AccountCreateForm accountCreateForm = data.getAccountCreateForm();
+        Account account = Account.builder()
+                .email(accountCreateForm.getEmail())
+                .nickName(accountCreateForm.getName())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .exitedAt(null)
                 .build();
+
+        account.setLinkedAuthSet(LinkedAuth.createLinkedAuth(data.getLinkedAuthCreateForm()));
+        account.setUserProfile(UserProfile.createUserProfile(data.getUserProfileCreateForm()));
+        return account;
     }
 
-    public Account signUp(LinkedAuthCreateForm linkedAuthCreateForm,
-                          UserProfileCreateForm userProfileCreateForm) {
-        setLinkedAuthSet(LinkedAuth.createLinkedAuth(linkedAuthCreateForm));
-        setUserProfile(UserProfile.createUserProfile(userProfileCreateForm));
-        return this;
+    public boolean isExited() {
+        return Objects.nonNull(this.exitedAt);
     }
 
     private void setLinkedAuthSet(LinkedAuth linkedAuth) {

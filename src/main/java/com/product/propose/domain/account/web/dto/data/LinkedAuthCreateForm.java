@@ -1,16 +1,20 @@
 package com.product.propose.domain.account.web.dto.data;
 
 import com.product.propose.domain.account.entity.enums.AccountType;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LinkedAuthCreateForm {
 
     @NotBlank
-    private final AccountType accountType;
+    private AccountType accountType;
 
     @NotBlank
-    private final String password;
+    private String password;
 }

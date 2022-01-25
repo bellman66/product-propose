@@ -15,14 +15,14 @@ public class AccountAssert extends Assert {
         AccountAssert.accountRepository = accountRepository;
     }
 
-    public static void notExist(String email) {
-        boolean result = accountRepository.existsByEmailAndExitedAtIsNull(email);
-        if (result) throw new CommonException(ErrorCode.ACCOUNT_EXISTS);
-    }
-
-    public static void hasNotification(long accountId) {
-        if (accountId != 1L) {
-            throw new CommonException(ErrorCode.ACCOUNT_NOT_EQUALS);
-        }
+    /**
+    *   @Author : Youn
+    *   @Summary : 최초 가입시 주로 사용
+    *   @Param : String TargetEmail
+    *   @Memo : 기존 이메일중에 사용하는 로직이 있는 경우
+    **/
+    public static void isAlreadyExist(String email) {
+        if (accountRepository.existsByEmailAndExitedAtIsNull(email))
+            throw new CommonException(ErrorCode.ACCOUNT_ALREADY_EXISTS);
     }
 }

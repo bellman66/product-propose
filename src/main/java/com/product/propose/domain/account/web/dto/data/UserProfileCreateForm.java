@@ -1,20 +1,25 @@
 package com.product.propose.domain.account.web.dto.data;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProfileCreateForm {
 
     @NotBlank
-    private final String userName;
+    private String userName;
 
     @NotBlank
-    private final String phoneNumber;
+    private String phoneNumber;
 
     @NotBlank
-    private final String postCode;
+    private String postCode;
 
     @NotBlank
-    private final String address;
+    private String address;
 }
