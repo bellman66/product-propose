@@ -21,8 +21,22 @@ public class AccountAssert extends Assert {
     *   @Param : String TargetEmail
     *   @Memo : 기존 이메일중에 사용하는 로직이 있는 경우
     **/
-    public static void isAlreadyExist(String email) {
+    public static void isNotExist(String email) {
         if (accountRepository.existsByEmailAndExitedAtIsNull(email))
             throw new CommonException(ErrorCode.ACCOUNT_ALREADY_EXISTS);
+    }
+
+    /**
+    *   @Author : Youn
+    *   @Summary : 로그인시 주로 사용
+    *   @Param :
+    *   @Memo :
+    **/
+    public static void isExist() {
+
+    }
+
+    private static void decideException(boolean trigger, ErrorCode targetCode) {
+        if (trigger) throw new CommonException(targetCode);
     }
 }

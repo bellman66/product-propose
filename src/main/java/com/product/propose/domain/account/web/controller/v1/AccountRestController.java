@@ -2,6 +2,7 @@ package com.product.propose.domain.account.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.domain.account.entity.aggregate.Account;
+import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import com.product.propose.global.api.RestApiController;
 import com.product.propose.domain.account.service.AccountService;
@@ -41,6 +42,19 @@ public class AccountRestController extends RestApiController {
     }
 
     // ===== ===== ===== ===== ===== Read Business Method ===== ===== ===== ===== =====
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest) {
+
+        // login Logic
+        Account result = accountService.login(loginRequest);
+
+        // JwtToken Logic
+
+        return createRestResponse(new HashMap<>() {{
+            put("accountId" , result.getId());
+        }});
+    }
 
     // ===== ===== ===== ===== ===== Update Business Method ===== ===== ===== ===== =====
 

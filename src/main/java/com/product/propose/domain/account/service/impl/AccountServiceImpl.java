@@ -1,7 +1,7 @@
 package com.product.propose.domain.account.service.impl;
 
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
-import com.product.propose.domain.account.web.dto.request.SignUpRequest;
+import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import com.product.propose.domain.account.entity.aggregate.Account;
@@ -9,7 +9,6 @@ import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.domain.account.service.AccountService;
 import com.product.propose.global.data.security.UserAccount;
 import com.product.propose.global.exception.dto.CommonException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,19 +45,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account signUpForDefault(SignUpData aData) {
-        AccountAssert.isAlreadyExist(aData.getSignUpEmail());
+        AccountAssert.isNotExist(aData.getSignUpEmail());
 
         Account result = Account.signUp(aData);
         return accountRepository.save(result);
     }
 
     // R
-    public void login(Account account, String password) {
+    @Override
+    public Account login(LoginRequest loginRequest) {
+        // Assertion
+
+
 //        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 //                new UserAccount(account),
 //                password,
 //                List.of(new SimpleGrantedAuthority("ROLE_USER"))
 //        );
-        SecurityContextHolder.getContext().setAuthentication(null);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return null;
     }
 }

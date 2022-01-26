@@ -1,30 +1,22 @@
-package com.product.propose.global.domain.account.mvc;
+package com.product.propose.domain.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
-import com.product.propose.domain.account.service.AccountService;
 import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
 import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
 import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +29,7 @@ public class AccountMvcTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("회원가입 MVC TEST")
     void signUpTest() throws Exception {
         // GIVEN
         AccountCreateForm accountCreateForm = new AccountCreateForm("Test@gmail.com", "Test");
@@ -47,7 +40,7 @@ public class AccountMvcTest {
 
         String content = objectMapper.writeValueAsString(signUpRequest);
 
-        // WHEN
+        // WHEN THEN
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/account/signup")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content))

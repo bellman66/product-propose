@@ -50,16 +50,19 @@ public class Account extends AbstractAggregateRoot<Account> {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LinkedAuth> linkedAuthSet = new HashSet<>();
 
-    // Create User - SignUp
-    public static Account signUp(SignUpData data) {
-        AccountCreateForm accountCreateForm = data.getAccountCreateForm();
-        Account account = Account.builder()
-                .email(accountCreateForm.getEmail())
-                .nickName(accountCreateForm.getName())
+    public static Account createAccount(AccountCreateForm createForm) {
+        return Account.builder()
+                .email(createForm.getEmail())
+                .nickName(createForm.getName())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .exitedAt(null)
                 .build();
+    }
+
+    // Create User - SignUp
+    public static Account signUp(SignUpData data) {
+        Account account = createAccount(data.getAccountCreateForm());
 
         account.setLinkedAuthSet(LinkedAuth.createLinkedAuth(data.getLinkedAuthCreateForm()));
         account.setUserProfile(UserProfile.createUserProfile(data.getUserProfileCreateForm()));
