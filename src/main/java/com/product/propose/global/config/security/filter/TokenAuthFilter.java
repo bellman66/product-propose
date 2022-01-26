@@ -20,11 +20,8 @@ public class TokenAuthFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String BEARER = "Bearer";
 
-    private final JwtUtil jwtUtil;
-
-    public TokenAuthFilter(RequestMatcher requestMatcher, JwtUtil jwtUtil) {
+    public TokenAuthFilter(RequestMatcher requestMatcher) {
         super(requestMatcher);
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class TokenAuthFilter extends AbstractAuthenticationProcessingFilter {
         if (!StringUtils.hasText(headerToken)) throw new BadCredentialsException("로그인이 필요한 서비스입니다.");
 
         // Decode Jwt
-        final String confirmEmail = jwtUtil.decodeJwt(headerToken.replace(BEARER, "").trim());
+        final String confirmEmail = JwtUtil.decodeJwt(headerToken.replace(BEARER, "").trim());
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(null, confirmEmail);
 

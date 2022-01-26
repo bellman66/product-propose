@@ -9,5 +9,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface AccountService extends UserDetailsService {
 
     Account signUpForDefault(SignUpData signUpData);
-    Account login(LoginRequest loginRequest);
+    Account loginForDefault(LoginRequest loginRequest);
 }

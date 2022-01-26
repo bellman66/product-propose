@@ -18,12 +18,16 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
-@RequiredArgsConstructor
 public class JwtUtil {
-    private final JwtProps jwtProps;
-    private final JWTVerifier jwtVerifier;
+    private static JwtProps jwtProps;
+    private static JWTVerifier jwtVerifier;
 
-    public String decodeJwt(String jwtToken) throws AuthenticationException {
+    public JwtUtil(JwtProps jwtProps, JWTVerifier jwtVerifier) {
+        JwtUtil.jwtProps = jwtProps;
+        JwtUtil.jwtVerifier = jwtVerifier;
+    }
+
+    public static String decodeJwt(String jwtToken) throws AuthenticationException {
         DecodedJWT decodedJWT;
 
         try {
@@ -41,7 +45,7 @@ public class JwtUtil {
         return decodedJWT.getClaim(jwtProps.getClaimId()).asString();
     }
 
-    public String encodeJwt(String email) {
+    public static String encodeJwt(String email) {
         return JWT.create()
                 .withIssuer(jwtProps.getIssur())
                 .withClaim(jwtProps.getClaimId(), email)

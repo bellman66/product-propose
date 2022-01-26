@@ -26,6 +26,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_EQUALS("1011", "유저가 서로 일치하지 않습니다.", null),
     VERIFICATION_NOT_CORRECT("1012", "Verification Not Correct", null),
     ACCOUNT_ALREADY_EXISTS("1013", "유저 이미 존재합니다.", null),
+    LINKED_AUTH_NOT_FOUND("1014", "인증 방식이 존재하지 않습니다.", null),
 
 
     // account - jwt (1200)

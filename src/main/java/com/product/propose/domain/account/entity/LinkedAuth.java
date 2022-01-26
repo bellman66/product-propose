@@ -3,6 +3,9 @@ package com.product.propose.domain.account.entity;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
+import com.product.propose.global.exception.dto.CommonException;
+import com.product.propose.global.exception.dto.enums.ErrorCode;
+import com.product.propose.global.utils.password.PasswordUtil;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -41,9 +44,13 @@ public class LinkedAuth {
     public static LinkedAuth createLinkedAuth(LinkedAuthCreateForm createForm) {
         return LinkedAuth.builder()
                 .accountType(createForm.getAccountType())
-                .password(createForm.getPassword())
+                .password(PasswordUtil.encode(createForm.getPassword()))
                 .confirmedAt(null)
                 .build();
+    }
+
+    public void checkPassword(String aPassword) {
+        if (!PasswordUtil.matches(aPassword, this.password)) throw new CommonException(ErrorCode.LOGIN_PROCESS_PASSWORD_NOTMATCH);
     }
 
     public void setAccount(Account account) {

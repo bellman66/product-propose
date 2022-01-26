@@ -1,5 +1,6 @@
 package com.product.propose.domain.account.service.impl;
 
+import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
@@ -9,6 +10,8 @@ import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.domain.account.service.AccountService;
 import com.product.propose.global.data.security.UserAccount;
 import com.product.propose.global.exception.dto.CommonException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account signUpForDefault(SignUpData aData) {
-        AccountAssert.isNotExist(aData.getSignUpEmail());
+        AccountAssert.nonExist(aData.getSignUpEmail());
 
         Account result = Account.signUp(aData);
         return accountRepository.save(result);
@@ -53,16 +56,14 @@ public class AccountServiceImpl implements AccountService {
 
     // R
     @Override
-    public Account login(LoginRequest loginRequest) {
-        // Assertion
+    public Account loginForDefault(LoginRequest loginRequest) {
+        AccountAssert.isExist(loginRequest.getEmail());
 
+        // Find Target Account
+        Account account = accountRepository.findLoginByEmail(loginRequest.getEmail());
 
-//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-//                new UserAccount(account),
-//                password,
-//                List.of(new SimpleGrantedAuthority("ROLE_USER"))
-//        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return null;
+        // Domain - authenticationToken
+        account.login(loginRequest.getAccountType(), loginRequest.getPassword());
+        return account;
     }
 }

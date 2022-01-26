@@ -66,7 +66,7 @@ public class AccountUnitTest {
         LoginRequest loginRequest = new LoginRequest("Test@gmail.com", "password");
 
         // WHEN
-        Account account = accountService.login(loginRequest);
+        Account account = accountService.loginForDefault(loginRequest);
 
         // THEN
         assertThat(account)

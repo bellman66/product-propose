@@ -3,7 +3,6 @@ package com.product.propose.global.config.security;
 import com.product.propose.global.config.security.filter.TokenAuthFilter;
 import com.product.propose.global.config.security.provider.TokenAuthProvider;
 import com.product.propose.global.config.security.setting.NoRedirectStrategy;
-import com.product.propose.global.utils.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -55,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     );
 
     private final TokenAuthProvider tokenAuthProvider;
-    private final JwtUtil jwtUtil;
 
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
@@ -96,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     TokenAuthFilter restJwtAuthFilter() throws Exception {
-        final TokenAuthFilter filter = new TokenAuthFilter(PROTECTED_URLS, jwtUtil);
+        final TokenAuthFilter filter = new TokenAuthFilter(PROTECTED_URLS);
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(authSuccessHandler());
         filter.setAuthenticationFailureHandler(authenticationFailureHandler);

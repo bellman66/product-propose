@@ -21,13 +21,9 @@ public class AccountRestController extends RestApiController {
     // service
     private final AccountService accountService;
 
-    // util
-    private final JwtUtil jwtUtil;
-
-    public AccountRestController(ObjectMapper objectMapper, AccountService accountService, JwtUtil jwtUtil) {
+    public AccountRestController(ObjectMapper objectMapper, AccountService accountService) {
         super(objectMapper);
         this.accountService = accountService;
-        this.jwtUtil = jwtUtil;
     }
 
     // ===== ===== ===== ===== ===== Create Business Method ===== ===== ===== ===== =====
@@ -47,12 +43,10 @@ public class AccountRestController extends RestApiController {
     public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest) {
 
         // login Logic
-        Account result = accountService.login(loginRequest);
-
-        // JwtToken Logic
+        Account result = accountService.loginForDefault(loginRequest);
 
         return createRestResponse(new HashMap<>() {{
-            put("accountId" , result.getId());
+            put("loginToken", result.getJwtToken());
         }});
     }
 
