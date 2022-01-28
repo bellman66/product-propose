@@ -37,7 +37,7 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     @Builder.Default
     private List<WikiTag> wikiTagGroup = new ArrayList<>();
 
-    private Wiki createWiki(WikiCreateForm createForm) {
+    private static Wiki createWiki(WikiCreateForm createForm) {
         return Wiki.builder()
                 .accountId(createForm.getAccountId())
                 .title(createForm.getTitle())
