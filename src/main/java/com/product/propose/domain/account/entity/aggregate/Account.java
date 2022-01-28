@@ -49,7 +49,7 @@ public class Account extends AbstractAggregateRoot<Account> {
     @Column(name = "exited_at")
     private LocalDateTime exitedAt;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     @JoinColumn(name = "user_profile_id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private UserProfile userProfile;
@@ -87,7 +87,7 @@ public class Account extends AbstractAggregateRoot<Account> {
         targetAuth.checkPassword(password);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                new UserAccount(this),
+                new UserAccount(this, targetAuth),
                 password,
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,6 +1,6 @@
 package com.product.propose.domain.account.service.impl;
 
-import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
+import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
@@ -10,8 +10,6 @@ import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.domain.account.service.AccountService;
 import com.product.propose.global.data.security.UserAccount;
 import com.product.propose.global.exception.dto.CommonException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,9 +34,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         Account account = accountRepository.findByEmail(email);
-        if (account == null) {
-            throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+        AccountAssert.isExist(account);
+
         return new UserAccount(account);
     }
 
@@ -60,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
         AccountAssert.isExist(loginRequest.getEmail());
 
         // Find Target Account
-        Account account = accountRepository.findLoginByEmail(loginRequest.getEmail());
+        Account account = accountRepository.findByEmail(loginRequest.getEmail());
 
         // Domain - authenticationToken
         account.login(loginRequest.getAccountType(), loginRequest.getPassword());

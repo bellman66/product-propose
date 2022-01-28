@@ -30,6 +30,7 @@ public class AccountRestController extends RestApiController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+        // Sign Up Logic
         Account result = accountService.signUpForDefault(signUpRequest.getSignUpData());
 
         return createRestResponse(new HashMap<>() {{
@@ -41,7 +42,6 @@ public class AccountRestController extends RestApiController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest) {
-
         // login Logic
         Account result = accountService.loginForDefault(loginRequest);
 

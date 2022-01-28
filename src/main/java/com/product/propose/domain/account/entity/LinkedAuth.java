@@ -30,7 +30,6 @@ public class LinkedAuth {
     @Column(name = "account_type")
     private AccountType accountType;
 
-    @NotBlank
     @Column(name = "password")
     private String password;
 

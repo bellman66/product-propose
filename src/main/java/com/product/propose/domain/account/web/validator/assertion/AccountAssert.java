@@ -1,9 +1,13 @@
 package com.product.propose.domain.account.web.validator.assertion;
 
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+
+import java.util.Objects;
 
 @Component
 public class AccountAssert extends CommonAssert {
@@ -32,5 +36,9 @@ public class AccountAssert extends CommonAssert {
     **/
     public static void isExist(String email) {
         decideException(accountRepository.existsByEmailAndExitedAtIsNull(email), ErrorCode.ACCOUNT_NOT_FOUND);
+    }
+
+    public static void isExist(Account account) {
+        decideException(Objects.nonNull(account), ErrorCode.ACCOUNT_NOT_FOUND);
     }
 }
