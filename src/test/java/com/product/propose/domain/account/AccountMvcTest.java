@@ -1,8 +1,6 @@
 package com.product.propose.domain.account;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
 import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;

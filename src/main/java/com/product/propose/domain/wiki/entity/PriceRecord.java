@@ -22,7 +22,7 @@ public class PriceRecord {
 
     // Aggregate Id - 가격 등록 Account
     @Column(name = "account_id")
-    private int accountId;
+    private Long accountId;
 
     @Column(name = "sale_price")
     private int salePrice;
@@ -37,7 +37,7 @@ public class PriceRecord {
     @JoinColumn(name = "wiki_id")
     private Wiki wiki;
 
-    private static PriceRecord createPriceRecord(PriceRecordCreateForm createform) {
+    public static PriceRecord createPriceRecord(PriceRecordCreateForm createform) {
         return PriceRecord.builder()
                 .accountId(createform.getAccountId())
                 .salePrice(createform.getSalePrice())
@@ -46,7 +46,7 @@ public class PriceRecord {
                 .build();
     }
 
-    private void setWiki(Wiki wiki) {
+    public void setWiki(Wiki wiki) {
         this.wiki = wiki;
     }
 }

@@ -2,7 +2,10 @@ package com.product.propose.domain.wiki.entity.aggregate;
 
 import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.WikiTag;
+import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
+import com.product.propose.domain.wiki.web.event.TagRegister;
 import lombok.*;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -24,7 +27,7 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
 
     // Aggregate Id - 위키 수정 Account
     @Column(name = "account_id")
-    private int accountId;
+    private Long accountId;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -44,7 +47,27 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
                 .build();
     }
 
-    public static Wiki registerWiki() {
-        return null;
+    public static Wiki registerWiki(WikiCreateData registerData) {
+        Wiki result = createWiki(registerData.getWikiCreateForm());
+
+        // 프라이스 등록
+        result.addPriceRecordGroup(PriceRecord.createPriceRecord(registerData.getPriceRecordCreateForm()));
+
+        // Event - Tag
+        result.eventWikiTagGroup(registerData.getTagGroup());
+        return result;
+    }
+
+    public void registerWikiTagGroup(Tag tag) {
+        wikiTagGroup.add(WikiTag.createrWikiTag(this, tag));
+    }
+
+    private void addPriceRecordGroup(PriceRecord priceRecord) {
+        priceRecord.setWiki(this);
+        priceRecordGroup.add(priceRecord);
+    }
+
+    private void eventWikiTagGroup(List<String> tagRegisterGroup) {
+        registerEvent(TagRegister.createTagRegister(this, tagRegisterGroup));
     }
 }

@@ -25,4 +25,19 @@ public class WikiTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public static WikiTag createrWikiTag(Wiki wiki, Tag tag) {
+        return WikiTag.builder()
+                .wiki(wiki)
+                .tag(tag)
+                .build();
+    }
+
+    public void setWiki(Wiki wiki) {
+        this.wiki = wiki;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
 }

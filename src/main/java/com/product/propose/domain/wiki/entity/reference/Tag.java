@@ -18,4 +18,10 @@ public class Tag {
 
     @Column(name = "name")
     private String name;
+
+    public static Tag createTag(String name) {
+        return Tag.builder()
+                .name(name)
+                .build();
+    }
 }

@@ -6,7 +6,6 @@ import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import com.product.propose.global.api.RestApiController;
 import com.product.propose.domain.account.service.AccountService;
-import com.product.propose.global.utils.jwt.JwtUtil;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

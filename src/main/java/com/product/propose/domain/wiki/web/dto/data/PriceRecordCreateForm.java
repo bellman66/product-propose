@@ -14,10 +14,10 @@ import javax.validation.constraints.Positive;
 public class PriceRecordCreateForm {
 
     @Positive
-    private int accountId;
+    private Long accountId;
     @Positive
     private int salePrice;
 
     @NotNull
-    SaleWay saleWay;
+    private SaleWay saleWay;
 }
