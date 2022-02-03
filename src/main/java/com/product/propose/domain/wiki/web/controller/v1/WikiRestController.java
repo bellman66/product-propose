@@ -33,7 +33,6 @@ public class WikiRestController extends RestApiController {
     private ResponseEntity<String> registerWiki(@RequestBody @Valid WikiRegisterRequest request) {
         // Register Logic
         Wiki result = wikiService.registerWiki(request);
-
         return createRestResponse(new HashMap<>() {{
             put("wiki", result.getId());
         }});

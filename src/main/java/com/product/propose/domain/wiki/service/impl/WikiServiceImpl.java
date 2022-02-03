@@ -29,12 +29,8 @@ public class WikiServiceImpl implements WikiService {
     @Override
     @Transactional
     public Wiki registerWiki(WikiRegisterRequest request) {
-
-        // 1. register Tag
-//        List<Tag> tags = registerTagGroup(request.getTagGroup());
-
-        // 2. register
+        // 1. register
        Wiki result = Wiki.registerWiki(request.getWikiCreateData());
-        return wikiRepository.save(result);
+       return wikiRepository.save(result);
     }
 }

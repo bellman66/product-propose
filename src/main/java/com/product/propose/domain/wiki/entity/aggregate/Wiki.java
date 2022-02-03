@@ -47,18 +47,24 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
                 .build();
     }
 
+    /**
+    *   @Author : Youn
+    *   @Summary : Main - 위키 등록
+    *   @Param : WikiCreateData
+    *   @Memo : 태그의 경우 이벤틀 로직으로 구성 ( 리스너 참조 )
+    **/
     public static Wiki registerWiki(WikiCreateData registerData) {
         Wiki result = createWiki(registerData.getWikiCreateForm());
 
         // 프라이스 등록
         result.addPriceRecordGroup(PriceRecord.createPriceRecord(registerData.getPriceRecordCreateForm()));
 
-        // Event - Tag
+        // Event - Tag 등록
         result.eventWikiTagGroup(registerData.getTagGroup());
         return result;
     }
 
-    public void registerWikiTagGroup(Tag tag) {
+    public void registerWikiTag(Tag tag) {
         wikiTagGroup.add(WikiTag.createrWikiTag(this, tag));
     }
 
@@ -67,6 +73,7 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
         priceRecordGroup.add(priceRecord);
     }
 
+    // Tag 등록 이벤트 발행 로직
     private void eventWikiTagGroup(List<String> tagRegisterGroup) {
         registerEvent(TagRegister.createTagRegister(this, tagRegisterGroup));
     }
