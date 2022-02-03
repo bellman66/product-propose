@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface WikiService {
 
-    List<Tag> registerTagGroup(List<String> tagGroup);
     Wiki registerWiki(WikiRegisterRequest request);
+
+    Wiki readWiki(Long targetId);
 }

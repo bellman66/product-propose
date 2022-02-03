@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -25,19 +26,39 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WikiMvcTest {
 
+    final Long DEFAULT_TARGET_ID = 1L;
+
     @Autowired
     MockMvc mvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @BeforeEach
+    void initTestCase() throws Exception {
+        // Sign Up Test Case
+        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki");
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
+        List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
+
+        WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
+        WikiRegisterRequest request = new WikiRegisterRequest(wikiCreateData);
+        String content = objectMapper.writeValueAsString(request);
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/register")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(content));
+
+        System.out.println(" \n\n >>> >>> >>> === === === >>> >>> >>> === === === >>> >>> >>> === === === >>> >>> >>> === === === \n\n ");
+    }
+
     @Test
     @DisplayName("위키 등록 MVC TEST")
     @Order(1)
     void registerWikiTest() throws Exception {
         // GIVEN
-        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
+        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki2");
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 20000, new SaleWay("test2", "", "", "", "", "", "", ""));
         List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
 
         WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
@@ -48,6 +69,19 @@ public class WikiMvcTest {
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/register")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(content))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("위키 READ MVC TEST")
+    @Order(2)
+    void readWikiTest() throws Exception {
+        // GIVEN - Default Use
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/read/" + DEFAULT_TARGET_ID)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
