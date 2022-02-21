@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public enum ErrorCode {
 
     // account, verification (1000)
-    ACCOUNT_NOT_FOUND("1001", "Account Not Found",null),
+    ACCOUNT_NOT_FOUND("1001", "유저가 존재하지 않습니다.",null),
 
     LOGIN_PROCESS_PASSWORD_NOTMATCH("1007" , "비밀번호가 일치하지 않습니다.", null),
     LOGIN_PROCESS_FAILED("1008" , "로그인에 실패하였습니다.", null),

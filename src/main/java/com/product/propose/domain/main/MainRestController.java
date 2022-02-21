@@ -22,7 +22,6 @@ public class MainRestController extends RestApiController {
 
     @GetMapping(value = "/server-check")
     public ResponseEntity<String> checkServerStatus() {
-        System.out.println(" in ");
         return createRestResponse(new HashMap<>(){{
             put("message", "SERVER OK");
         }});
