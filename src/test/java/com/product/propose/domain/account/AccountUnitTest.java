@@ -3,7 +3,9 @@ package com.product.propose.domain.account;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.repository.AccountRepository;
-import com.product.propose.domain.account.service.impl.AccountServiceImpl;
+import com.product.propose.domain.account.service.adapter.AuthServiceAdapter;
+import com.product.propose.domain.account.service.impl.KakaoAuthServiceImpl;
+import com.product.propose.domain.account.service.impl.PasswordAuthServiceImpl;
 import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
 import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
 import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
@@ -32,7 +34,13 @@ public class AccountUnitTest {
     private AccountRepository accountRepository;
 
     @InjectMocks
-    private AccountServiceImpl accountService;
+    private PasswordAuthServiceImpl passwordAuthService;
+
+    @InjectMocks
+    private KakaoAuthServiceImpl kakaoAuthService;
+
+    @InjectMocks
+    private AuthServiceAdapter authServiceAdapter;
 
     @InjectMocks
     private AccountAssert accountAssert;
@@ -53,7 +61,7 @@ public class AccountUnitTest {
         Mockito.when(accountRepository.save(any(Account.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         // WHEN
-        Account account = accountService.signUpForDefault(signUpData);
+        Account account = passwordAuthService.signUp(signUpData);
 
         // THEN
         assertThat(account)
@@ -80,7 +88,7 @@ public class AccountUnitTest {
         Mockito.when(accountRepository.findByEmail(any(String.class))).thenReturn(returnAccount);
 
         // WHEN
-        Account account = accountService.loginForDefault(loginRequest);
+        Account account = passwordAuthService.login(loginRequest);
 
         // THEN
         assertThat(account)

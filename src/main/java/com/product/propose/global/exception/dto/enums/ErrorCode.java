@@ -20,12 +20,14 @@ public enum ErrorCode {
     ACCOUNT_ALREADY_EXISTS("1013", "유저가 이미 존재합니다.", null),
     LINKED_AUTH_NOT_FOUND("1014", "인증 방식이 존재하지 않습니다.", null),
 
-
     // account - jwt (1200)
     JWT_TOKEN_EXPIRED("1201", "토큰이 만료되었습니다.", null),
     JWT_VERIFICATION_FAIL("1202", "로그인 인증에 실패하였습니다.", null),
     JWT_EXCEPTION_FAIL("1203", "로그인 정보가 유효하지 않습니다.", null),
     ACCESS_DENIED("1204", "접근 권한이 없습니다.", null),
+
+    // auth
+    NOT_SUPPORT_AUTH_SERVICE("1301", "지원하지 않는 인증경로입니다.", null),
 
     // Wiki
     WIKI_NOT_FOUND("2001", "관련된 컨텐츠를 찾지 못했습니다", null),

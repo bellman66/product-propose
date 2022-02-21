@@ -11,4 +11,8 @@ public abstract class CommonAssert extends Assert {
     protected static void decideException(boolean trigger, ErrorCode targetCode) {
         if (!trigger) throw new CommonException(targetCode);
     }
+
+    public static void isTrue(boolean expression, ErrorCode errorCode) {
+        decideException(expression, errorCode);
+    }
 }
