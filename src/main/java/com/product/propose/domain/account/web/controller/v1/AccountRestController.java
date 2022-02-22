@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.service.AuthService;
 import com.product.propose.domain.account.service.adapter.AuthServiceAdapter;
+import com.product.propose.domain.account.web.dto.mapper.AccountMapper;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import com.product.propose.global.annotation.CurrentAccount;
@@ -58,12 +59,12 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/info")
     public ResponseEntity<String> profile(@CurrentAccount Account account) {
         CommonAssert.isTrue(account != null, ErrorCode.ACCOUNT_NOT_FOUND);
 
         return createRestResponse(new HashMap<>() {{
-            put("account", account.getEmail());
+            put("accountInfo", AccountMapper.INSTANCE.accountToInfo(account));
         }});
     }
 

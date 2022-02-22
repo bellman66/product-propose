@@ -46,6 +46,10 @@ dependencies {
     // Swagger
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
     // ===== ===== ===== ===== ===== Google Drive 관련 ===== ===== ===== ===== =====
 
     implementation group: 'com.google.apis', name: 'google-api-services-drive', version: 'v3-rev110-1.23.0'
