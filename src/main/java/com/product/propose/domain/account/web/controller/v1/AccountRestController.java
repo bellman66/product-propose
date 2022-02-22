@@ -58,12 +58,12 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
-    @PostMapping("/profile")
+    @GetMapping("/profile")
     public ResponseEntity<String> profile(@CurrentAccount Account account) {
         CommonAssert.isTrue(account != null, ErrorCode.ACCOUNT_NOT_FOUND);
 
         return createRestResponse(new HashMap<>() {{
-            put("account", account);
+            put("account", account.getEmail());
         }});
     }
 
