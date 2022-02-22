@@ -1,7 +1,6 @@
 package com.product.propose.domain.wiki.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;

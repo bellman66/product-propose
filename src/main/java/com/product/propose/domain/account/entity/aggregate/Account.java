@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+*   @Author : Youn
+*   @Summary : Account
+*   @Memo : AbstractAggregateRoot
+**/
 @Entity
 @Getter
 @Table(name="account")
@@ -79,11 +84,13 @@ public class Account extends AbstractAggregateRoot<Account> {
     }
 
     public void login(AccountType type, String password) {
+        // Find Target Auth
         LinkedAuth targetAuth = linkedAuthSet.stream()
                 .filter(auth -> auth.getAccountType() == type)
                 .findFirst()
                 .orElseThrow(() -> new CommonException(ErrorCode.LINKED_AUTH_NOT_FOUND));
 
+        // Check Password
         targetAuth.checkPassword(password);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -109,5 +116,4 @@ public class Account extends AbstractAggregateRoot<Account> {
     private void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
-
 }
