@@ -1,5 +1,6 @@
 package com.product.propose.domain.account.web.dto.request;
 
+import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,4 +15,8 @@ public class SignUpRequest {
 
     @NotNull
     private SignUpData signUpData;
+
+    public AccountType getAccountType() {
+        return signUpData.getLinkedAuthCreateForm().getAccountType();
+    }
 }

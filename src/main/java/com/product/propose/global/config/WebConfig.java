@@ -4,10 +4,7 @@ import com.product.propose.global.interceptor.NotificationInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +17,12 @@ public class WebConfig implements WebMvcConfigurer {
     // 추후 npm 적용 시 필요
 
     private final NotificationInterceptor notificationInterceptor;
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000", "http://localhost:8080");
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
