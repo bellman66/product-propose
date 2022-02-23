@@ -14,4 +14,8 @@ public class WikiRegisterRequest {
 
     @NotNull
     private WikiCreateData wikiCreateData;
+
+    public String getWikiTitle() {
+        return wikiCreateData.getWikiCreateForm().getTitle();
+    }
 }

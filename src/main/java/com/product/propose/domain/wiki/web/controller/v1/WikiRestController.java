@@ -1,9 +1,11 @@
 package com.product.propose.domain.wiki.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import com.product.propose.global.api.RestApiController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +42,15 @@ public class WikiRestController extends RestApiController {
     @PostMapping("/read/{wikiId}")
     private ResponseEntity<String> readWiki(@PathVariable Long wikiId) {
         // Register Logic
-        Wiki result = wikiService.readWiki(wikiId);
+        WikiResponse result = wikiService.readWiki(wikiId);
+
+        System.out.println("result title = " + result.getTitle());
+        for (PriceRecord priceRecord:result.getPriceRecordGroup()) {
+            System.out.println("priceRecord = " + priceRecord);
+        }
 
         return createRestResponse(new HashMap<>() {{
-            put("wikiId", result.getId());
+            put("wikiId", result.getTitle());
         }});
     }
 

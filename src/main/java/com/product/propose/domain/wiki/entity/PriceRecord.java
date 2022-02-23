@@ -24,6 +24,9 @@ public class PriceRecord {
     @Column(name = "account_id")
     private Long accountId;
 
+    @Column(name = "origin_price")
+    private int originPrice;
+
     @Column(name = "sale_price")
     private int salePrice;
 
@@ -40,6 +43,7 @@ public class PriceRecord {
     public static PriceRecord createPriceRecord(PriceRecordCreateForm createform) {
         return PriceRecord.builder()
                 .accountId(createform.getAccountId())
+                .originPrice(createform.getOriginPrice())
                 .salePrice(createform.getSalePrice())
                 .saleWay(createform.getSaleWay())
                 .recordDate(LocalDateTime.now())

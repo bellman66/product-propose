@@ -16,6 +16,8 @@ public class PriceRecordCreateForm {
     @Positive
     private Long accountId;
     @Positive
+    private int originPrice;
+    @Positive
     private int salePrice;
 
     @NotNull

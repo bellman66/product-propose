@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -37,8 +38,8 @@ public class WikiMvcTest {
     @BeforeEach
     void initTestCase() throws Exception {
         // Sign Up Test Case
-        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
+        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki1");
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 22000, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
         List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
 
         WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
@@ -53,12 +54,12 @@ public class WikiMvcTest {
     }
 
     @Test
-    @DisplayName("위키 등록 MVC TEST")
     @Order(1)
+    @DisplayName("위키 등록 MVC TEST")
     void registerWikiTest() throws Exception {
         // GIVEN
         WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki2");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 20000, new SaleWay("test2", "", "", "", "", "", "", ""));
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 22000, 20000, new SaleWay("test2", "", "", "", "", "", "", ""));
         List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
 
         WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
@@ -74,8 +75,9 @@ public class WikiMvcTest {
     }
 
     @Test
-    @DisplayName("위키 READ MVC TEST")
     @Order(2)
+    @DisplayName("위키 READ MVC TEST")
+    @Commit
     void readWikiTest() throws Exception {
         // GIVEN - Default Use
 

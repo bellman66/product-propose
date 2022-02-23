@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // Wiki
     WIKI_NOT_FOUND("2001", "관련된 컨텐츠를 찾지 못했습니다", null),
+    ALREADY_EXISTS_WIKI("2002", "이미 동일한 컨텐츠가 존재합니다.", null),
 
     // iamport (5000)
     IAMPORT_ACCESS_TOKEN_NOT_FOUND("5001", "Iamport Access Token Not Found", "/"),

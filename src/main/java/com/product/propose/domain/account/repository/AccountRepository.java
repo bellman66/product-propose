@@ -11,6 +11,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Account
 
     boolean existsByEmailAndExitedAtIsNull(String email);
 
-    @EntityGraph(attributePaths = {"linkedAuthSet"})
+    @EntityGraph(attributePaths = {"userProfile","linkedAuthSet"})
     Account findByEmail(String email);
 }

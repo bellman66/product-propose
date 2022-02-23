@@ -59,8 +59,15 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
+    /**
+    *   @Author : Youn
+    *   @Summary : 로그인시 사용자 정보 반환
+    *   @Url : /account/info
+    *   @Param : null
+    *   @Memo : Security를 통한 접근
+    **/
     @GetMapping("/info")
-    public ResponseEntity<String> profile(@CurrentAccount Account account) {
+    public ResponseEntity<String> info(@CurrentAccount Account account) {
         CommonAssert.isTrue(account != null, ErrorCode.ACCOUNT_NOT_FOUND);
 
         return createRestResponse(new HashMap<>() {{
