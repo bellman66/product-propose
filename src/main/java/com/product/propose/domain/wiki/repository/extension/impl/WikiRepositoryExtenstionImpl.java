@@ -1,13 +1,16 @@
 package com.product.propose.domain.wiki.repository.extension.impl;
 
-import com.product.propose.domain.wiki.entity.aggregate.QWiki;
-import com.product.propose.domain.wiki.entity.reference.QTag;
+import com.mysema.commons.lang.CloseableIterator;
 import com.product.propose.domain.wiki.repository.extension.WikiRepositoryExtenstion;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.global.data.assertion.CommonAssert;
+import com.product.propose.global.exception.dto.enums.ErrorCode;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.hibernate.annotations.QueryHints;
+import org.springframework.data.support.PageableExecutionUtils;
 
-import static com.product.propose.domain.wiki.entity.QPriceRecord.priceRecord;
 import static com.product.propose.domain.wiki.entity.QWikiTag.wikiTag;
 import static com.product.propose.domain.wiki.entity.aggregate.QWiki.wiki;
 import static com.product.propose.domain.wiki.entity.reference.QTag.tag;
@@ -25,20 +28,23 @@ public class WikiRepositoryExtenstionImpl implements WikiRepositoryExtenstion {
 
     @Override
     public WikiResponse findWikiResponseById(Long wikiId) {
-        return queryFactory
-                .select(Projections.constructor(WikiResponse.class,
-                            wiki.title,
-                            wiki.priceRecordGroup,
-                            wikiTag.tag
-                        ))
+        CloseableIterator<WikiResponse> transform = queryFactory
                 .from(wiki)
-                .innerJoin(wiki.priceRecordGroup, priceRecord).fetchJoin()
-                .innerJoin(wiki.wikiTagGroup, wikiTag)
-                .innerJoin(wikiTag.tag, tag).fetchJoin()
+                .join(wiki.wikiTagGroup, wikiTag).join(wikiTag.tag, tag)
                 .where(
                         wiki.id.eq(wikiId)
                 )
-                .fetchOne();
+                .setHint(QueryHints.READ_ONLY, true)
+                .transform(GroupBy.groupBy(wiki)
+                        .iterate(Projections.constructor(WikiResponse.class,
+                                        wiki.title,
+                                        GroupBy.list(tag)
+                                )
+                        )
+                );
+
+        CommonAssert.isTrue(transform.hasNext(), ErrorCode.WIKI_NOT_FOUND);
+        return transform.next();
     }
 
     // ===== ===== ===== ===== ===== boolean expression ===== ===== ===== ===== =====

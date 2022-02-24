@@ -44,10 +44,10 @@ public class WikiRestController extends RestApiController {
         // Register Logic
         WikiResponse result = wikiService.readWiki(wikiId);
 
-        System.out.println("result title = " + result.getTitle());
-        for (PriceRecord priceRecord:result.getPriceRecordGroup()) {
-            System.out.println("priceRecord = " + priceRecord);
-        }
+//        System.out.println("result title = " + result.getTitle());
+//        for (PriceRecord priceRecord:result.getPriceRecordGroup()) {
+//            System.out.println("priceRecord = " + priceRecord);
+//        }
 
         return createRestResponse(new HashMap<>() {{
             put("wikiId", result.getTitle());

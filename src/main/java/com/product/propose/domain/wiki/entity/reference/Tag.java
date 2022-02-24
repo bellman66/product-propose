@@ -24,4 +24,9 @@ public class Tag {
                 .name(name)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return this.id + " / " + this.name;
+    }
 }

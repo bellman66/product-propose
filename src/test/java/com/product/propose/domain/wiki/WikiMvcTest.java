@@ -1,16 +1,24 @@
 package com.product.propose.domain.wiki;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.entity.embedded.SaleWay;
+import com.product.propose.domain.wiki.entity.reference.Tag;
+import com.product.propose.domain.wiki.repository.PriceRecordRepository;
+import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,11 +43,16 @@ public class WikiMvcTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private WikiRepository wikiRepository;
+    @Autowired
+    private PriceRecordRepository priceRecordRepository;
+
     @BeforeEach
     void initTestCase() throws Exception {
         // Sign Up Test Case
         WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki1");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 22000, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(1L, 22000, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
         List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
 
         WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
@@ -77,7 +90,6 @@ public class WikiMvcTest {
     @Test
     @Order(2)
     @DisplayName("위키 READ MVC TEST")
-    @Commit
     void readWikiTest() throws Exception {
         // GIVEN - Default Use
 
@@ -86,5 +98,38 @@ public class WikiMvcTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    // JPA DATA ========================================================================================================
+
+    @Test
+    @DisplayName("위키 RESPONSE JPA DATA TEST")
+    void getWikiResponse() throws Exception {
+        // GIVEN - INIT
+
+        // WHEN
+        WikiResponse result = wikiRepository.findWikiResponseById(1L);
+        List<Tag> tagGroup = result.getTagGroup();
+
+        // THEN
+        Assertions.assertThat(result)
+                .isNotNull().isOfAnyClassIn(WikiResponse.class)
+                .extracting(WikiResponse::getTitle).isInstanceOf(String.class);
+        Assertions.assertThat(result.getTagGroup())
+                .isNotEmpty().hasSize(2);
+    }
+
+    @Test
+    @DisplayName("가격기록 PAGEABLE JPA DATA TEST")
+    void priceRecordPageable() throws Exception {
+        // GIVEN - INIT
+
+        // WHEN
+        PageRequest pageRequest = PageRequest.of(1, 5);
+        Page<PriceRecord> result = priceRecordRepository.findByWikiId(1L, pageRequest);
+
+        // THEN
+        List<PriceRecord> content = result.getContent();
+        content.forEach(value -> System.out.println("value = " + value.toString()));
     }
 }

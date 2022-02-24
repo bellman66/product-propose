@@ -1,6 +1,5 @@
 package com.product.propose.domain.wiki.web.dto.response;
 
-import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.reference.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +16,5 @@ public class WikiResponse {
     private String title;
 
     // PriceRecord
-    private List<PriceRecord> priceRecordGroup;
-
-    // Wiki Tag
     private List<Tag> tagGroup;
 }

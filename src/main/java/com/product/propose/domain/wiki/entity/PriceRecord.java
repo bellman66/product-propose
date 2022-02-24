@@ -53,4 +53,9 @@ public class PriceRecord {
     public void setWiki(Wiki wiki) {
         this.wiki = wiki;
     }
+
+    @Override
+    public String toString() {
+        return this.id + " / " + wiki.getId();
+    }
 }
