@@ -9,7 +9,6 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.annotations.QueryHints;
-import org.springframework.data.support.PageableExecutionUtils;
 
 import static com.product.propose.domain.wiki.entity.QWikiTag.wikiTag;
 import static com.product.propose.domain.wiki.entity.aggregate.QWiki.wiki;

@@ -1,8 +1,6 @@
 package com.product.propose.domain.wiki;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.wiki.entity.PriceRecord;
-import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.entity.embedded.SaleWay;
 import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.repository.PriceRecordRepository;
@@ -11,6 +9,7 @@ import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.response.PriceRecordResponse;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -20,9 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -125,11 +122,10 @@ public class WikiMvcTest {
         // GIVEN - INIT
 
         // WHEN
-        PageRequest pageRequest = PageRequest.of(1, 5);
-        Page<PriceRecord> result = priceRecordRepository.findByWikiId(1L, pageRequest);
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Page<PriceRecordResponse> result = priceRecordRepository.findPageByWikiId(1L, pageRequest);
 
         // THEN
-        List<PriceRecord> content = result.getContent();
-        content.forEach(value -> System.out.println("value = " + value.toString()));
+        Assertions.assertThat(result).isNotNull().isOfAnyClassIn(Page.class);
     }
 }

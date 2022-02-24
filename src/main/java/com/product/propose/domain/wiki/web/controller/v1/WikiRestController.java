@@ -1,12 +1,14 @@
 package com.product.propose.domain.wiki.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
+import com.product.propose.domain.wiki.service.PriceRecordService;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import com.product.propose.global.api.RestApiController;
+import com.product.propose.global.data.dto.PageResponse;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,15 @@ import java.util.HashMap;
 @RequestMapping(value = "/api/v1/wiki", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WikiRestController extends RestApiController {
 
-    private final WikiService wikiService;
+    private static final int DEFAULT_PAGE_SIZE = 20;
 
-    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService) {
+    private final WikiService wikiService;
+    private final PriceRecordService priceRecordService;
+
+    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService, PriceRecordService priceRecordService) {
         super(objectMapper);
         this.wikiService = wikiService;
+        this.priceRecordService = priceRecordService;
     }
 
     // ===== ===== ===== ===== ===== Create Business Method ===== ===== ===== ===== =====
@@ -41,16 +47,15 @@ public class WikiRestController extends RestApiController {
 
     @PostMapping("/read/{wikiId}")
     private ResponseEntity<String> readWiki(@PathVariable Long wikiId) {
-        // Register Logic
-        WikiResponse result = wikiService.readWiki(wikiId);
+        // get WikiResponse
+        WikiResponse wikiSummary = wikiService.readWiki(wikiId);
 
-//        System.out.println("result title = " + result.getTitle());
-//        for (PriceRecord priceRecord:result.getPriceRecordGroup()) {
-//            System.out.println("priceRecord = " + priceRecord);
-//        }
+        // get Page PriceRecord
+        PageResponse priceRecords = priceRecordService.getRecordPage(wikiId, PageRequest.of(0, DEFAULT_PAGE_SIZE));
 
         return createRestResponse(new HashMap<>() {{
-            put("wikiId", result.getTitle());
+            put("summary", wikiSummary);
+            put("priceRecords", priceRecords);
         }});
     }
 
