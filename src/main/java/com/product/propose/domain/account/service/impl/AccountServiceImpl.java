@@ -16,13 +16,11 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
     }
 
-    // ===== ===== ===== ===== ===== business method ===== ===== ===== ===== =====
-
     @Override
     public Account getAccountInternal(String email) {
-        return accountRepository.findByEmail(email);
+        return accountRepository.findAuthByEmail(email);
     }
 
-    // ===== ===== ===== ===== ===== method ===== ===== ===== ===== =====
+    // ============================================  Business  ===================================================
 
 }

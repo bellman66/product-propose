@@ -1,7 +1,7 @@
 package com.product.propose.example;
 
 import com.product.propose.global.config.TestConfig;
-import com.product.propose.global.utils.AccountTestUtil;
+import com.product.propose.global.utils.AccountFactory;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   @Memo : DataJpaTest 기본형
  **/
 @DataJpaTest
-@Import({TestConfig.class, AccountTestUtil.class})   // Bean DI를 위해 설정
+@Import({TestConfig.class, AccountFactory.class})   // Bean DI를 위해 설정
 public class DataJpaTestDefault {
 
     // repository
@@ -26,7 +26,7 @@ public class DataJpaTestDefault {
 
     // test util
     @Autowired
-    private AccountTestUtil accountTestUtil;
+    private AccountFactory accountFactory;
 
     @Test
     void getAccount() { // Repository Test

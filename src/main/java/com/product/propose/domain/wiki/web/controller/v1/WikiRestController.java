@@ -2,6 +2,7 @@ package com.product.propose.domain.wiki.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
+import com.product.propose.domain.wiki.repository.PriceRecordRepository;
 import com.product.propose.domain.wiki.service.PriceRecordService;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
@@ -23,13 +24,18 @@ public class WikiRestController extends RestApiController {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
 
+    // Service
     private final WikiService wikiService;
     private final PriceRecordService priceRecordService;
 
-    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService, PriceRecordService priceRecordService) {
+    // Repository
+    private final PriceRecordRepository priceRecordRepository;
+
+    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService, PriceRecordService priceRecordService, PriceRecordRepository priceRecordRepository) {
         super(objectMapper);
         this.wikiService = wikiService;
         this.priceRecordService = priceRecordService;
+        this.priceRecordRepository = priceRecordRepository;
     }
 
     // ===== ===== ===== ===== ===== Create Business Method ===== ===== ===== ===== =====
@@ -51,7 +57,7 @@ public class WikiRestController extends RestApiController {
         WikiResponse wikiSummary = wikiService.readWiki(wikiId);
 
         // get Page PriceRecord
-        PageResponse priceRecords = priceRecordService.getRecordPage(wikiId, PageRequest.of(0, DEFAULT_PAGE_SIZE));
+        PageResponse priceRecords = priceRecordRepository.readPageByWikiId(wikiId, PageRequest.of(0, DEFAULT_PAGE_SIZE));
 
         return createRestResponse(new HashMap<>() {{
             put("summary", wikiSummary);

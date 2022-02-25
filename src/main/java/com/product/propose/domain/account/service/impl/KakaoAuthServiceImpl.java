@@ -6,9 +6,7 @@ import com.product.propose.domain.account.service.AuthService;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
-import com.product.propose.global.data.security.UserAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +38,7 @@ public class KakaoAuthServiceImpl implements AuthService {
         AccountAssert.isExist(loginRequest.getEmail());
 
         // Find Target Account
-        Account account = accountRepository.findByEmail(loginRequest.getEmail());
+        Account account = accountRepository.findAuthByEmail(loginRequest.getEmail());
 
         // Domain - authenticationToken
         account.login(loginRequest.getAccountType(), loginRequest.getPassword());

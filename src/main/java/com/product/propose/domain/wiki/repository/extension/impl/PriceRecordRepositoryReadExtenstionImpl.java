@@ -1,7 +1,8 @@
 package com.product.propose.domain.wiki.repository.extension.impl;
 
-import com.product.propose.domain.wiki.repository.extension.PriceRecordRepositoryExtenstion;
+import com.product.propose.domain.wiki.repository.extension.PriceRecordRepositoryReadExtenstion;
 import com.product.propose.domain.wiki.web.dto.response.PriceRecordResponse;
+import com.product.propose.global.data.dto.PageResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,18 +16,18 @@ import static com.product.propose.domain.wiki.entity.QPriceRecord.priceRecord;
 import static com.product.propose.domain.wiki.entity.aggregate.QWiki.wiki;
 
 
-public class PriceRecordRepositoryExtenstionImpl implements PriceRecordRepositoryExtenstion {
+public class PriceRecordRepositoryReadExtenstionImpl implements PriceRecordRepositoryReadExtenstion {
 
     private final JPAQueryFactory queryFactory;
 
-    public PriceRecordRepositoryExtenstionImpl(JPAQueryFactory jpaQueryFactory) {
+    public PriceRecordRepositoryReadExtenstionImpl(JPAQueryFactory jpaQueryFactory) {
         this.queryFactory = jpaQueryFactory;
     }
 
     // ===== ===== ===== ===== ===== override method ===== ===== ===== ===== =====
 
     @Override
-    public Page<PriceRecordResponse> findPageByWikiId(Long wikiId, Pageable pageable) {
+    public PageResponse readPageByWikiId(Long wikiId, Pageable pageable) {
         JPAQuery<PriceRecordResponse> recordJPAQuery = queryFactory
                 .select(Projections.constructor(PriceRecordResponse.class,
                             priceRecord.id,
@@ -46,7 +47,7 @@ public class PriceRecordRepositoryExtenstionImpl implements PriceRecordRepositor
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        return PageableExecutionUtils.getPage(fetch, pageable, recordJPAQuery::fetchCount);
+        return PageResponse.create(PageableExecutionUtils.getPage(fetch, pageable, recordJPAQuery::fetchCount));
     }
 
     // ===== ===== ===== ===== ===== boolean expression ===== ===== ===== ===== =====

@@ -5,7 +5,6 @@ import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Objects;
 

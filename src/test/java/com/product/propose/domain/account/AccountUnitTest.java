@@ -85,7 +85,7 @@ public class AccountUnitTest {
         Account returnAccount = Account.signUp(signUpData);
 
         Mockito.when(accountRepository.existsByEmailAndExitedAtIsNull(any(String.class))).thenReturn(true);
-        Mockito.when(accountRepository.findByEmail(any(String.class))).thenReturn(returnAccount);
+        Mockito.when(accountRepository.findAuthByEmail(any(String.class))).thenReturn(returnAccount);
 
         // WHEN
         Account account = passwordAuthService.login(loginRequest);

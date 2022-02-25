@@ -9,14 +9,13 @@ import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
-import com.product.propose.domain.wiki.web.dto.response.PriceRecordResponse;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.global.data.dto.PageResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -123,9 +122,9 @@ public class WikiMvcTest {
 
         // WHEN
         PageRequest pageRequest = PageRequest.of(0, 5);
-        Page<PriceRecordResponse> result = priceRecordRepository.findPageByWikiId(1L, pageRequest);
+        PageResponse result = priceRecordRepository.readPageByWikiId(1L, pageRequest);
 
         // THEN
-        Assertions.assertThat(result).isNotNull().isOfAnyClassIn(Page.class);
+        Assertions.assertThat(result).isNotNull().isOfAnyClassIn(PageResponse.class);
     }
 }

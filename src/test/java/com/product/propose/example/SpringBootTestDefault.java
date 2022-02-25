@@ -1,6 +1,6 @@
 package com.product.propose.example;
 
-import com.product.propose.global.utils.AccountTestUtil;
+import com.product.propose.global.utils.AccountFactory;
 import com.product.propose.domain.account.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ public class SpringBootTestDefault {
 
     // test util
     @Autowired
-    private AccountTestUtil accountTestUtil;
+    private AccountFactory accountFactory;
 
     @BeforeEach
     void before() {
