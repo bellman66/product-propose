@@ -1,5 +1,7 @@
 package com.product.propose.domain.account.entity;
 
+import com.product.propose.domain.account.web.dto.data.AccountUpdateForm;
+import com.product.propose.domain.account.web.dto.data.ProfileUpdateForm;
 import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
 import lombok.*;
 import org.hibernate.annotations.Cache;
@@ -43,5 +45,14 @@ public class UserProfile {
                 .emailRecv(false)
                 .phoneRecv(false)
                 .build();
+    }
+
+    public void updateProfileInfo(ProfileUpdateForm profileUpdateForm) {
+        this.userName = profileUpdateForm.getUserName();
+        this.phoneNumber = profileUpdateForm.getPhoneNumber();
+        this.postCode = profileUpdateForm.getPostCode();
+        this.address = profileUpdateForm.getAddress();
+        this.emailRecv = profileUpdateForm.isEmailRecv();
+        this.phoneRecv = profileUpdateForm.isPhoneRecv();
     }
 }

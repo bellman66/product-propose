@@ -32,6 +32,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Account
     @QueryHints(value = @QueryHint(name = READ_ONLY, value = "true"))
     Account findAuthByEmail(String email);
 
-    @EntityGraph(attributePaths = {"userProfile", "linkedAuthSet"})
+    @EntityGraph(attributePaths = {"userProfile"})
     Account findAccountById(Long id);
 }

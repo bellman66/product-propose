@@ -4,6 +4,9 @@ import com.product.propose.domain.account.entity.LinkedAuth;
 import com.product.propose.domain.account.entity.UserProfile;
 import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
+import com.product.propose.domain.account.web.dto.data.AccountUpdateForm;
+import com.product.propose.domain.account.web.dto.data.ProfileUpdateForm;
+import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.global.data.security.UserAccount;
 import com.product.propose.global.exception.dto.CommonException;
@@ -83,6 +86,7 @@ public class Account extends AbstractAggregateRoot<Account> {
         return account;
     }
 
+    // Login User
     public void login(AccountType type, String password) {
         // Find Target Auth
         LinkedAuth targetAuth = linkedAuthSet.stream()
@@ -100,6 +104,11 @@ public class Account extends AbstractAggregateRoot<Account> {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    public void updateProfile(ProfileUpdateData profileUpdateData) {
+        setAccountInfo(profileUpdateData.getAccountUpdateForm());
+        setProfileInfo(profileUpdateData.getProfileUpdateForm());
+    }
+
     public String getJwtToken() {
         return JwtUtil.encodeJwt(this.email);
     }
@@ -108,6 +117,8 @@ public class Account extends AbstractAggregateRoot<Account> {
         return Objects.nonNull(this.exitedAt);
     }
 
+    // ============================================  ETC  ===================================================
+
     private void setLinkedAuthSet(LinkedAuth linkedAuth) {
         linkedAuth.setAccount(this);
         this.linkedAuthSet.add(linkedAuth);
@@ -115,5 +126,13 @@ public class Account extends AbstractAggregateRoot<Account> {
 
     private void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    private void setAccountInfo(AccountUpdateForm accountUpdateForm) {
+        this.nickName = accountUpdateForm.getNickName();
+    }
+
+    private void setProfileInfo(ProfileUpdateForm profileUpdateForm) {
+        getUserProfile().updateProfileInfo(profileUpdateForm);
     }
 }

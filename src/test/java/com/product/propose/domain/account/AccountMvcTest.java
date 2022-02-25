@@ -101,9 +101,23 @@ public class AccountMvcTest {
     }
 
     @Test
-    @Order(3)
-    @DisplayName("유저 Profile Mvc TEST")
+    @Order(4)
+    @DisplayName("Profile 반환 Mvc TEST")
     void ProfileTest() throws Exception {
+        // GIVEN
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/account/profile")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Profile Update Mvc TEST")
+    void updateProfileTest() throws Exception {
         // GIVEN
 
         // WHEN THEN

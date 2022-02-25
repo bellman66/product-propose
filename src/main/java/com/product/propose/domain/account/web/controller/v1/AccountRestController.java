@@ -7,6 +7,7 @@ import com.product.propose.domain.account.repository.AccountRepository;
 import com.product.propose.domain.account.service.AuthService;
 import com.product.propose.domain.account.service.adapter.AuthServiceAdapter;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
+import com.product.propose.domain.account.web.dto.request.ProfileUpdateRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import com.product.propose.domain.account.web.dto.response.InfoResponse;
 import com.product.propose.domain.account.web.dto.response.ProfileResponse;
@@ -86,7 +87,7 @@ public class AccountRestController extends RestApiController {
 
     /**
     *   @Author : Youn
-    *   @Summary : 로그인시 사용자 정보 반환
+    *   @Summary : 로그인시 Simple 사용자 정보 반환
     *   @Url : /account/info
     *   @Param : null
     *   @Memo : Security를 통한 접근 - accessToken
@@ -104,6 +105,13 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
+    /**
+    *   @Author : Youn
+    *   @Summary : 프로필 정보 반환
+    *   @Url : /account/profile
+    *   @Param : null
+    *   @Memo : Security를 통한 접근 , 연결 Auth Type 반환.
+    **/
     @GetMapping("/profile")
     public ResponseEntity<String> getProfile(@CurrentAccount Account account) {
         // Check Assertion
@@ -122,6 +130,20 @@ public class AccountRestController extends RestApiController {
     }
 
     // ============================================  Update - Put  ===================================================
+
+    @PutMapping("/profile/update")
+    public ResponseEntity<String> putProfile(@CurrentAccount Account account,
+                                             @RequestBody @Valid ProfileUpdateRequest profileUpdateRequest) {
+        // Check Assertion
+        CommonAssert.exists(account, ErrorCode.ACCOUNT_NOT_FOUND);
+
+        // Update Account & Profile
+        Account result = accountService.updateProfile(account.getId(), profileUpdateRequest.getProfileUpdateData());
+
+        return createRestResponse(new HashMap<>() {{
+            put("result", result.getId());
+        }});
+    }
 
     // ============================================  Delete - delete  ===================================================
 

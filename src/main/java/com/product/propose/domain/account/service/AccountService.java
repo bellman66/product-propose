@@ -1,6 +1,7 @@
 package com.product.propose.domain.account.service;
 
 import com.product.propose.domain.account.entity.aggregate.Account;
+import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
 import com.product.propose.domain.account.web.validator.assertion.AccountAssert;
 import com.product.propose.global.data.security.UserAccount;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,4 +19,6 @@ public interface AccountService extends UserDetailsService {
 
         return new UserAccount(account);
     }
+
+    Account updateProfile(Long accountId, ProfileUpdateData profileUpdateData);
 }
