@@ -8,6 +8,7 @@ import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
+import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import com.product.propose.global.data.dto.PageResponse;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -59,7 +61,9 @@ public class WikiMvcTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(content));
 
-        System.out.println(" \n\n >>> >>> >>> === === === >>> >>> >>> === === === >>> >>> >>> === === === >>> >>> >>> === === === \n\n ");
+        System.out.println(" \n\n>>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>>");
+        System.out.println(" >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> \n\n ");
+
     }
 
     @Test
@@ -90,8 +94,24 @@ public class WikiMvcTest {
         // GIVEN - Default Use
 
         // WHEN THEN
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/read/" + DEFAULT_TARGET_ID)
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/wiki/" + DEFAULT_TARGET_ID + "/read")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("가격 추가 등록 MVC TEST")
+    void registerPriceRecordTest() throws Exception {
+        // GIVEN - Default Use
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(1L, 30000, 24900, new SaleWay("Add Sale Way","","","","","","",""));
+        PriceRegisterRequest priceRegisterRequest = new PriceRegisterRequest(priceRecordCreateForm);
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/1/price/register")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(priceRegisterRequest)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }

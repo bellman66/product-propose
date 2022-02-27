@@ -21,4 +21,6 @@ public interface AccountService extends UserDetailsService {
     }
 
     Account updateProfile(Long accountId, ProfileUpdateData profileUpdateData);
+
+    Account exitAccount(Long accountId);
 }

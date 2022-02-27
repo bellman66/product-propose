@@ -33,9 +33,19 @@ public class AccountServiceImpl implements AccountService {
 
         // Update Account & Profile
         account.updateProfile(profileUpdateData);
-
         return accountRepository.save(account);
     }
 
     // ============================================  delete  ===================================================
+
+    @Override
+    public Account exitAccount(Long accountId) {
+        // Get & Assertion
+        Account account = accountRepository.findAccountById(accountId);
+        AccountAssert.isExist(account);
+
+        // Exit Account & Profile
+        account.exit();
+        return accountRepository.save(account);
+    }
 }

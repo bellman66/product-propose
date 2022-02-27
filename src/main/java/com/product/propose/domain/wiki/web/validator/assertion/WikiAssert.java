@@ -1,9 +1,13 @@
 package com.product.propose.domain.wiki.web.validator.assertion;
 
+import com.product.propose.domain.account.entity.aggregate.Account;
+import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 public class WikiAssert extends CommonAssert {
@@ -14,15 +18,19 @@ public class WikiAssert extends CommonAssert {
         WikiAssert.wikiRepository = wikiRepository;
     }
 
-    public static void isExist(Long id) {
-        decideException(wikiRepository.existsById(id), ErrorCode.WIKI_NOT_FOUND);
+    public static void isExist(Long wikiId) {
+        decideException(wikiRepository.existsById(wikiId), ErrorCode.WIKI_NOT_FOUND);
+    }
+
+    public static void isExist(Wiki wiki) {
+        decideException(Objects.nonNull(wiki), ErrorCode.WIKI_NOT_FOUND);
     }
 
     public static void nonExist(String title) {
         decideException(!wikiRepository.existsByTitle(title), ErrorCode.ALREADY_EXISTS_WIKI);
     }
 
-    public static void nonExist(Long id) {
-        decideException(!wikiRepository.existsById(id), ErrorCode.ALREADY_EXISTS_WIKI);
+    public static void nonExist(Long wikiId) {
+        decideException(!wikiRepository.existsById(wikiId), ErrorCode.ALREADY_EXISTS_WIKI);
     }
 }

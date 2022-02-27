@@ -109,6 +109,10 @@ public class Account extends AbstractAggregateRoot<Account> {
         setProfileInfo(profileUpdateData.getProfileUpdateForm());
     }
 
+    public void exit() {
+        this.exitedAt = LocalDateTime.now();
+    }
+
     public String getJwtToken() {
         return JwtUtil.encodeJwt(this.email);
     }

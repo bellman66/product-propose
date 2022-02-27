@@ -83,7 +83,7 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
-    // ============================================  Read - Get  ===================================================
+    // ============================================  Read - Get  ======================================================
 
     /**
     *   @Author : Youn
@@ -129,8 +129,15 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
-    // ============================================  Update - Put  ===================================================
+    // ============================================  Update - Put  ====================================================
 
+    /**
+    *   @Author : Youn
+    *   @Summary : 프로필 정보 수정
+    *   @Url : /account/profile/update
+    *   @Param : ProfileUpdateRequest
+    *   @Memo : AccountId를 통한 변경
+    **/
     @PutMapping("/profile/update")
     public ResponseEntity<String> putProfile(@CurrentAccount Account account,
                                              @RequestBody @Valid ProfileUpdateRequest profileUpdateRequest) {
@@ -145,6 +152,26 @@ public class AccountRestController extends RestApiController {
         }});
     }
 
-    // ============================================  Delete - delete  ===================================================
+    // ============================================  Delete - delete  =================================================
 
+
+    /**
+     *   @Author : Youn
+     *   @Summary : 유저 탈퇴
+     *   @Url : /account/exit
+     *   @Param : null
+     *   @Memo : AccountId를 통한 변경
+     **/
+    @DeleteMapping("/exit")
+    public ResponseEntity<String> exitAccount(@CurrentAccount Account account) {
+        // Check Assertion
+        CommonAssert.exists(account, ErrorCode.ACCOUNT_NOT_FOUND);
+
+        // Exit Account & Profile
+        Account result = accountService.exitAccount(account.getId());
+
+        return createRestResponse(new HashMap<>() {{
+            put("result", result.getId());
+        }});
+    }
 }

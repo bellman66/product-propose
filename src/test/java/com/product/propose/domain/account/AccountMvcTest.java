@@ -3,11 +3,11 @@ package com.product.propose.domain.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
-import com.product.propose.domain.account.web.dto.data.AccountCreateForm;
-import com.product.propose.domain.account.web.dto.data.LinkedAuthCreateForm;
-import com.product.propose.domain.account.web.dto.data.UserProfileCreateForm;
+import com.product.propose.domain.account.web.dto.data.*;
+import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
 import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
+import com.product.propose.domain.account.web.dto.request.ProfileUpdateRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
 import com.product.propose.global.utils.AccountFactory;
 import org.junit.jupiter.api.*;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -29,6 +30,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.validation.constraints.NotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,6 +49,7 @@ public class AccountMvcTest {
     @BeforeEach
     void before() throws Exception {
         this.accessToken = AccountFactory.create().getJwtToken();
+        System.out.println(" \nResult ==================================================================================== \n");
     }
 
     @Test
@@ -119,9 +122,29 @@ public class AccountMvcTest {
     @DisplayName("Profile Update Mvc TEST")
     void updateProfileTest() throws Exception {
         // GIVEN
+        AccountUpdateForm accountUpdateForm = new AccountUpdateForm("new Nick");
+        ProfileUpdateForm profileUpdateForm = new ProfileUpdateForm("New User", "new phone", "new Post", "new address", true, true);
+
+        ProfileUpdateData profileUpdateData = new ProfileUpdateData(accountUpdateForm, profileUpdateForm);
+        ProfileUpdateRequest pageRequest = new ProfileUpdateRequest(profileUpdateData);
 
         // WHEN THEN
-        mvc.perform(MockMvcRequestBuilders.get("/api/v1/account/profile")
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/account/profile/update")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + accessToken)
+                        .content(objectMapper.writeValueAsString(pageRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Account exit Mvc TEST")
+    void exitAccountTest() throws Exception {
+        // GIVEN
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/account/exit")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization", "Bearer " + accessToken))
                 .andExpect(MockMvcResultMatchers.status().isOk())

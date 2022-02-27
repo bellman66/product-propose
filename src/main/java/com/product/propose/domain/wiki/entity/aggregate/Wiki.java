@@ -1,10 +1,13 @@
 package com.product.propose.domain.wiki.entity.aggregate;
 
+import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
 import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.WikiTag;
 import com.product.propose.domain.wiki.entity.reference.Tag;
+import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
+import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
 import com.product.propose.domain.wiki.web.event.TagRegister;
 import lombok.*;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -64,9 +67,20 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
         return result;
     }
 
-    public void registerWikiTag(Tag tag) {
-        wikiTagGroup.add(WikiTag.createrWikiTag(this, tag));
+    public void updateWiki(WikiUpdateData updateData) {
+        this.title = updateData.getTitle();
     }
+
+    /**
+    *   @Author : Youn
+    *   @Summary : 가격 정책 추가
+    *   @Param : PriceRecordCreateForm
+    **/
+    public void registerPriceRecord(PriceRecordCreateForm priceRecordCreateForm) {
+        addPriceRecordGroup(PriceRecord.createPriceRecord(priceRecordCreateForm));
+    }
+
+    // ============================================  ETC  ===================================================
 
     private void addPriceRecordGroup(PriceRecord priceRecord) {
         priceRecord.setWiki(this);
@@ -76,5 +90,9 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     // Tag 등록 이벤트 발행 로직
     private void eventWikiTagGroup(List<String> tagRegisterGroup) {
         registerEvent(TagRegister.createTagRegister(this, tagRegisterGroup));
+    }
+
+    public void registerWikiTag(Tag tag) {
+        wikiTagGroup.add(WikiTag.createrWikiTag(this, tag));
     }
 }
