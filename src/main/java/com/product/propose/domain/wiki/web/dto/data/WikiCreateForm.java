@@ -12,8 +12,6 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 public class WikiCreateForm {
 
-    @Positive
-    private Long accountId;
     @NotBlank
     private String title;
 }

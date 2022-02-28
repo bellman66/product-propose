@@ -26,7 +26,7 @@ public class WikiTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    public static WikiTag createrWikiTag(Wiki wiki, Tag tag) {
+    public static WikiTag create(Wiki wiki, Tag tag) {
         return WikiTag.builder()
                 .wiki(wiki)
                 .tag(tag)

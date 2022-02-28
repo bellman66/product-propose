@@ -33,11 +33,11 @@ public class AccountAssert extends CommonAssert {
     *   @Param : String Email
     *   @Memo : 존재할 경우 비즈니스 로직 진행
     **/
-    public static void isExist(String email) {
+    public static void exists(String email) {
         decideException(accountRepository.existsByEmailAndExitedAtIsNull(email), ErrorCode.ACCOUNT_NOT_FOUND);
     }
 
-    public static void isExist(Account account) {
+    public static void exists(Account account) {
         decideException(Objects.nonNull(account), ErrorCode.ACCOUNT_NOT_FOUND);
     }
 }

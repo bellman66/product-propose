@@ -35,7 +35,7 @@ public class KakaoAuthServiceImpl implements AuthService {
     // R
     @Override
     public Account login(LoginRequest loginRequest) {
-        AccountAssert.isExist(loginRequest.getEmail());
+        AccountAssert.exists(loginRequest.getEmail());
 
         // Find Target Account
         Account account = accountRepository.findAuthByEmail(loginRequest.getEmail());

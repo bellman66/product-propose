@@ -67,7 +67,7 @@ public class Account extends AbstractAggregateRoot<Account> {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LinkedAuth> linkedAuthSet = new HashSet<>();
 
-    public static Account createAccount(AccountCreateForm createForm) {
+    public static Account create(AccountCreateForm createForm) {
         return Account.builder()
                 .email(createForm.getEmail())
                 .nickName(createForm.getName())
@@ -79,10 +79,10 @@ public class Account extends AbstractAggregateRoot<Account> {
 
     // Create User - SignUp
     public static Account signUp(SignUpData data) {
-        Account account = createAccount(data.getAccountCreateForm());
+        Account account = create(data.getAccountCreateForm());
 
-        account.setLinkedAuthSet(LinkedAuth.createLinkedAuth(data.getLinkedAuthCreateForm()));
-        account.setUserProfile(UserProfile.createUserProfile(data.getUserProfileCreateForm()));
+        account.setLinkedAuthSet(LinkedAuth.create(data.getLinkedAuthCreateForm()));
+        account.setUserProfile(UserProfile.create(data.getUserProfileCreateForm()));
         return account;
     }
 
@@ -104,8 +104,12 @@ public class Account extends AbstractAggregateRoot<Account> {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    private void update(AccountUpdateForm accountUpdateForm) {
+        this.nickName = accountUpdateForm.getNickName();
+    }
+
     public void updateProfile(ProfileUpdateData profileUpdateData) {
-        setAccountInfo(profileUpdateData.getAccountUpdateForm());
+        update(profileUpdateData.getAccountUpdateForm());
         setProfileInfo(profileUpdateData.getProfileUpdateForm());
     }
 
@@ -132,11 +136,7 @@ public class Account extends AbstractAggregateRoot<Account> {
         this.userProfile = userProfile;
     }
 
-    private void setAccountInfo(AccountUpdateForm accountUpdateForm) {
-        this.nickName = accountUpdateForm.getNickName();
-    }
-
     private void setProfileInfo(ProfileUpdateForm profileUpdateForm) {
-        getUserProfile().updateProfileInfo(profileUpdateForm);
+        getUserProfile().update(profileUpdateForm);
     }
 }

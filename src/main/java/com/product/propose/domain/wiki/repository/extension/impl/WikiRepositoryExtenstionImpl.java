@@ -29,7 +29,7 @@ public class WikiRepositoryExtenstionImpl implements WikiRepositoryExtenstion {
     public WikiResponse findWikiResponseById(Long wikiId) {
         CloseableIterator<WikiResponse> transform = queryFactory
                 .from(wiki)
-                .join(wiki.wikiTagGroup, wikiTag).join(wikiTag.tag, tag)
+                .leftJoin(wiki.wikiTagGroup, wikiTag).leftJoin(wikiTag.tag, tag)
                 .where(
                         wiki.id.eq(wikiId)
                 )

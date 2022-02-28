@@ -20,4 +20,8 @@ public class WikiCreateData {
     private PriceRecordCreateForm priceRecordCreateForm;
 
     private List<String> tagGroup;
+
+    public String getWikiTitle() {
+        return getWikiCreateForm().getTitle();
+    }
 }

@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     public Account updateProfile(Long accountId, ProfileUpdateData profileUpdateData) {
         // Get & Assertion
         Account account = accountRepository.findAccountById(accountId);
-        AccountAssert.isExist(account);
+        AccountAssert.exists(account);
 
         // Update Account & Profile
         account.updateProfile(profileUpdateData);
@@ -42,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
     public Account exitAccount(Long accountId) {
         // Get & Assertion
         Account account = accountRepository.findAccountById(accountId);
-        AccountAssert.isExist(account);
+        AccountAssert.exists(account);
 
         // Exit Account & Profile
         account.exit();

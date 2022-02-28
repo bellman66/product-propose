@@ -1,6 +1,5 @@
 package com.product.propose.domain.wiki.web.validator.assertion;
 
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.global.data.assertion.CommonAssert;
@@ -18,11 +17,11 @@ public class WikiAssert extends CommonAssert {
         WikiAssert.wikiRepository = wikiRepository;
     }
 
-    public static void isExist(Long wikiId) {
+    public static void exists(Long wikiId) {
         decideException(wikiRepository.existsById(wikiId), ErrorCode.WIKI_NOT_FOUND);
     }
 
-    public static void isExist(Wiki wiki) {
+    public static void exists(Wiki wiki) {
         decideException(Objects.nonNull(wiki), ErrorCode.WIKI_NOT_FOUND);
     }
 

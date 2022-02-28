@@ -5,8 +5,6 @@ import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.repository.TagRepository;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.web.event.TagRegister;
-import com.product.propose.global.exception.dto.CommonException;
-import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +61,7 @@ public class RegisterListener {
         // 3. Collect Create Tags
         List<Tag> createTags = tagRepository.saveAll(
                                 aTagList.stream()
-                                        .map(Tag::createTag)
+                                        .map(Tag::create)
                                         .collect(Collectors.toList()));
         result.addAll(createTags);
 

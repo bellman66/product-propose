@@ -39,7 +39,7 @@ public class LinkedAuth {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    public static LinkedAuth createLinkedAuth(LinkedAuthCreateForm createForm) {
+    public static LinkedAuth create(LinkedAuthCreateForm createForm) {
         return LinkedAuth.builder()
                 .accountType(createForm.getAccountType())
                 .password(PasswordUtil.encode(createForm.getPassword()))

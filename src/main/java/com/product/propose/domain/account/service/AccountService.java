@@ -15,7 +15,7 @@ public interface AccountService extends UserDetailsService {
     @Override
     default UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = getAccountInternal(email);
-        AccountAssert.isExist(account);
+        AccountAssert.exists(account);
 
         return new UserAccount(account);
     }

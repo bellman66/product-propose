@@ -1,14 +1,16 @@
 package com.product.propose.domain.wiki.entity.aggregate;
 
-import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
 import com.product.propose.domain.wiki.entity.PriceRecord;
 import com.product.propose.domain.wiki.entity.WikiTag;
 import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
 import com.product.propose.domain.wiki.web.event.TagRegister;
+import com.product.propose.global.exception.dto.CommonException;
+import com.product.propose.global.exception.dto.enums.ErrorCode;
 import lombok.*;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -43,9 +45,9 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     @Builder.Default
     private List<WikiTag> wikiTagGroup = new ArrayList<>();
 
-    private static Wiki createWiki(WikiCreateForm createForm) {
+    private static Wiki create(Long accountId, WikiCreateForm createForm) {
         return Wiki.builder()
-                .accountId(createForm.getAccountId())
+                .accountId(accountId)
                 .title(createForm.getTitle())
                 .build();
     }
@@ -56,18 +58,18 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     *   @Param : WikiCreateData
     *   @Memo : 태그의 경우 이벤틀 로직으로 구성 ( 리스너 참조 )
     **/
-    public static Wiki registerWiki(WikiCreateData registerData) {
-        Wiki result = createWiki(registerData.getWikiCreateForm());
+    public static Wiki registerWiki(Long accountId, WikiCreateData registerData) {
+        Wiki result = create(accountId, registerData.getWikiCreateForm());
 
         // 프라이스 등록
-        result.addPriceRecordGroup(PriceRecord.createPriceRecord(registerData.getPriceRecordCreateForm()));
+        result.addPriceRecordGroup(PriceRecord.create(accountId, registerData.getPriceRecordCreateForm()));
 
         // Event - Tag 등록
         result.eventWikiTagGroup(registerData.getTagGroup());
         return result;
     }
 
-    public void updateWiki(WikiUpdateData updateData) {
+    public void update(WikiUpdateData updateData) {
         this.title = updateData.getTitle();
     }
 
@@ -76,8 +78,16 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     *   @Summary : 가격 정책 추가
     *   @Param : PriceRecordCreateForm
     **/
-    public void registerPriceRecord(PriceRecordCreateForm priceRecordCreateForm) {
-        addPriceRecordGroup(PriceRecord.createPriceRecord(priceRecordCreateForm));
+    public void registerPriceRecord(Long accountId, PriceRecordCreateForm priceRecordCreateForm) {
+        addPriceRecordGroup(PriceRecord.create(accountId, priceRecordCreateForm));
+    }
+
+    public void updatePriceRecord(Long recordId, Long accountId, PriceUpdateData updateData) {
+        PriceRecord target = getPriceRecordGroup().stream()
+                .filter(priceRecord -> priceRecord.getId().equals(recordId) && priceRecord.getAccountId().equals(accountId))
+                .findFirst()
+                .orElseThrow(() -> new CommonException(ErrorCode.PRICE_RECORD_NOT_FOUND));
+        target.update(updateData);
     }
 
     // ============================================  ETC  ===================================================
@@ -93,6 +103,6 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     }
 
     public void registerWikiTag(Tag tag) {
-        wikiTagGroup.add(WikiTag.createrWikiTag(this, tag));
+        wikiTagGroup.add(WikiTag.create(this, tag));
     }
 }

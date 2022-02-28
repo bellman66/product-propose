@@ -3,6 +3,7 @@ package com.product.propose.domain.wiki.entity;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.entity.embedded.SaleWay;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,15 +41,23 @@ public class PriceRecord {
     @JoinColumn(name = "wiki_id")
     private Wiki wiki;
 
-    public static PriceRecord createPriceRecord(PriceRecordCreateForm createform) {
+    public static PriceRecord create(Long accountId, PriceRecordCreateForm createform) {
         return PriceRecord.builder()
-                .accountId(createform.getAccountId())
+                .accountId(accountId)
                 .originPrice(createform.getOriginPrice())
                 .salePrice(createform.getSalePrice())
                 .saleWay(createform.getSaleWay())
                 .recordDate(LocalDateTime.now())
                 .build();
     }
+
+    public void update(PriceUpdateData updateData) {
+        this.originPrice = updateData.getOriginPrice();
+        this.salePrice = updateData.getSalePrice();
+        this.saleWay = updateData.getSaleWay();
+    }
+
+    // ============================================  ETC  ===================================================
 
     public void setWiki(Wiki wiki) {
         this.wiki = wiki;

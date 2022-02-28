@@ -4,8 +4,9 @@ import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
+import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
-import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import com.product.propose.domain.wiki.web.validator.assertion.WikiAssert;
 import org.springframework.stereotype.Service;
@@ -25,46 +26,54 @@ public class WikiServiceImpl implements WikiService {
 
     @Override
     @Transactional
-    public Wiki registerWiki(WikiRegisterRequest request) {
-        WikiAssert.nonExist(request.getWikiTitle());
+    public Wiki registerWiki(Long accountId, WikiCreateData createData) {
+        WikiAssert.nonExist(createData.getWikiTitle());
 
         // 1. register
-        Wiki result = Wiki.registerWiki(request.getWikiCreateData());
+        Wiki result = Wiki.registerWiki(accountId, createData);
         return wikiRepository.save(result);
     }
 
     @Override
     public WikiResponse readWiki(Long targetId) {
-        WikiAssert.isExist(targetId);
+        WikiAssert.exists(targetId);
 
         return wikiRepository.findWikiResponseById(targetId);
     }
 
     @Override
     @Transactional
-    public Wiki addPriceRecord(Long wikiId, PriceRecordCreateForm priceRegisterData) {
+    public Wiki addPriceRecord(Long wikiId, Long accountId, PriceRecordCreateForm priceRegisterData) {
         // Assert Exist Wiki
-        WikiAssert.isExist(wikiId);
-
-        // Find Target Wiki
         Wiki wiki = wikiRepository.findWikiById(wikiId);
+        WikiAssert.exists(wiki);
 
         // Register Price Record
-        wiki.registerPriceRecord(priceRegisterData);
-        return wiki;
+        wiki.registerPriceRecord(accountId, priceRegisterData);
+        return wikiRepository.save(wiki);
     }
 
     @Override
     @Transactional
     public Wiki updateWiki(Long wikiId, WikiUpdateData wikiUpdateData) {
-        // Assert Exist Wiki
-        WikiAssert.isExist(wikiId);
-
-        // Find Target Wiki
+        // Get & Assertion
         Wiki wiki = wikiRepository.findWikiById(wikiId);
+        WikiAssert.exists(wiki);
 
         // Update Wiki
-        wiki.updateWiki(wikiUpdateData);
-        return wiki;
+        wiki.update(wikiUpdateData);
+        return wikiRepository.save(wiki);
+    }
+
+    @Override
+    @Transactional
+    public Wiki updatePriceRecord(Long wikiId, Long recordId, Long accountId, PriceUpdateData updateData) {
+        // Get & Assertion
+        Wiki wiki = wikiRepository.findWikiById(wikiId);
+        WikiAssert.exists(wiki);
+
+        // PriceRecord
+        wiki.updatePriceRecord(recordId, accountId, updateData);
+        return wikiRepository.save(wiki);
     }
 }

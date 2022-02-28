@@ -32,9 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountMvcTest {
 

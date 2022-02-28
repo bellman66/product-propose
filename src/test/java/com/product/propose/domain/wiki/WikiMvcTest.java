@@ -1,17 +1,24 @@
 package com.product.propose.domain.wiki;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.entity.embedded.SaleWay;
 import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.repository.PriceRecordRepository;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
+import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
 import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.request.PriceUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.request.WikiUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
 import com.product.propose.global.data.dto.PageResponse;
+import com.product.propose.global.utils.AccountFactory;
+import com.product.propose.global.utils.WikiFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +26,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,23 +54,17 @@ public class WikiMvcTest {
     @Autowired
     private PriceRecordRepository priceRecordRepository;
 
+    private String accessToken;
+
     @BeforeEach
     void initTestCase() throws Exception {
-        // Sign Up Test Case
-        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki1");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(1L, 22000, 20000, new SaleWay("test1", "", "", "", "", "", "", ""));
-        List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
+        this.accessToken = AccountFactory.create().getJwtToken();
 
-        WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
-        WikiRegisterRequest request = new WikiRegisterRequest(wikiCreateData);
-        String content = objectMapper.writeValueAsString(request);
-
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/register")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(content));
+        // Wiki Test Case
+        Wiki wiki = WikiFactory.create();
 
         System.out.println(" \n\n>>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>>");
-        System.out.println(" >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> \n\n ");
+        System.out.println(">>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> \n\n ");
 
     }
 
@@ -71,8 +73,8 @@ public class WikiMvcTest {
     @DisplayName("위키 등록 MVC TEST")
     void registerWikiTest() throws Exception {
         // GIVEN
-        WikiCreateForm wikiCreateForm = new WikiCreateForm(1L, "TestWiki2");
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(2L, 22000, 20000, new SaleWay("test2", "", "", "", "", "", "", ""));
+        WikiCreateForm wikiCreateForm = new WikiCreateForm("TestWiki2");
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(22000, 20000, new SaleWay("test2", "", "", "", "", "", "", ""));
         List<String> tagGroup = new ArrayList<>(){{ add("TestTag1"); add("TestTag2"); }};
 
         WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
@@ -82,6 +84,7 @@ public class WikiMvcTest {
         // WHEN THEN
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/register")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + accessToken)
                         .content(content))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
@@ -105,16 +108,51 @@ public class WikiMvcTest {
     @DisplayName("가격 추가 등록 MVC TEST")
     void registerPriceRecordTest() throws Exception {
         // GIVEN - Default Use
-        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(1L, 30000, 24900, new SaleWay("Add Sale Way","","","","","","",""));
+        PriceRecordCreateForm priceRecordCreateForm = new PriceRecordCreateForm(30000, 24900, new SaleWay("Add Sale Way","","","","","","",""));
         PriceRegisterRequest priceRegisterRequest = new PriceRegisterRequest(priceRecordCreateForm);
 
         // WHEN THEN
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/wiki/1/price/register")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + accessToken)
                         .content(objectMapper.writeValueAsString(priceRegisterRequest)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @Test
+    @Order(4)
+    @DisplayName("위키 업데이트 MVC TEST")
+    void putWikiTest() throws Exception {
+        // GIVEN
+        WikiUpdateData wikiUpdateData = new WikiUpdateData("update Title");
+        WikiUpdateRequest wikiUpdateRequest = new WikiUpdateRequest(wikiUpdateData);
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/wiki/1/update")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(wikiUpdateRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("위키-가격 업데이트 MVC TEST")
+    void putPriceRecordTest() throws Exception {
+        // GIVEN
+        PriceUpdateData wikiUpdateData = new PriceUpdateData(40000,34500, new SaleWay("Update Way","","","","","","",""));
+        PriceUpdateRequest wikiUpdateRequest = new PriceUpdateRequest(wikiUpdateData);
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/wiki/1/price/1/update")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + accessToken)
+                        .content(objectMapper.writeValueAsString(wikiUpdateRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
 
     // JPA DATA ========================================================================================================
 

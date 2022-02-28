@@ -1,15 +1,20 @@
 package com.product.propose.domain.wiki.web.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.PriceRecordRepository;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
+import com.product.propose.domain.wiki.web.dto.request.PriceUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.global.annotation.CurrentAccount;
 import com.product.propose.global.api.RestApiController;
+import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.data.dto.PageResponse;
+import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +44,12 @@ public class WikiRestController extends RestApiController {
     // ============================================  Create - Post  ===================================================
 
     @PostMapping("/register")
-    private ResponseEntity<String> registerWiki(@RequestBody @Valid WikiRegisterRequest request) {
+    private ResponseEntity<String> registerWiki(@CurrentAccount Account account,
+                                                @RequestBody @Valid WikiRegisterRequest registerRequest) {
+        CommonAssert.exists(account, ErrorCode.ACCOUNT_NOT_FOUND);
+
         // Register Logic
-        Wiki result = wikiService.registerWiki(request);
+        Wiki result = wikiService.registerWiki(account.getId(), registerRequest.getWikiCreateData());
         return createRestResponse(new HashMap<>() {{
             put("result", result.getId());
         }});
@@ -49,9 +57,12 @@ public class WikiRestController extends RestApiController {
 
     @PostMapping("/{wikiId}/price/register")
     private ResponseEntity<String> registerPriceRecord(@PathVariable Long wikiId,
+                                                       @CurrentAccount Account account,
                                                        @RequestBody @Valid PriceRegisterRequest request) {
+        CommonAssert.exists(account, ErrorCode.ACCOUNT_NOT_FOUND);
+
         // Register PriceRecord
-        Wiki result = wikiService.addPriceRecord(wikiId, request.getPriceRecordCreateForm());
+        Wiki result = wikiService.addPriceRecord(wikiId, account.getId(), request.getPriceRecordCreateForm());
 
         return createRestResponse(new HashMap<>() {{
             put("result", result.getId());
@@ -89,9 +100,13 @@ public class WikiRestController extends RestApiController {
 
     @PutMapping("/{wikiId}/price/{recordId}/update")
     private ResponseEntity<String> putPriceRecord(@PathVariable Long wikiId,
-                                                  @RequestBody @Valid WikiUpdateRequest request) {
-        // get WikiResponse
-        Wiki result = wikiService.updateWiki(wikiId, request.getWikiUpdateData());
+                                                  @PathVariable Long recordId,
+                                                  @CurrentAccount Account account,
+                                                  @RequestBody @Valid PriceUpdateRequest request) {
+        CommonAssert.exists(account, ErrorCode.ACCOUNT_NOT_FOUND);
+
+        // Update PriceRecord
+        Wiki result = wikiService.updatePriceRecord(wikiId, recordId, account.getId(), request.getPriceUpdateData());
 
         return createRestResponse(new HashMap<>() {{
             put("result", result.getId());
