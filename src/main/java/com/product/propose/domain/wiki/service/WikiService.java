@@ -5,13 +5,13 @@ import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
-import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 
 public interface WikiService {
 
     Wiki registerWiki(Long accountId, WikiCreateData request);
 
-    WikiResponse readWiki(Long targetId);
+    WikiSummaryResponse readWiki(Long targetId);
 
     Wiki addPriceRecord(Long wikiId, Long accountId, PriceRecordCreateForm priceRecordCreateForm);
 

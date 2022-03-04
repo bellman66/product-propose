@@ -15,7 +15,7 @@ import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.PriceUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiUpdateRequest;
-import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 import com.product.propose.global.data.dto.PageResponse;
 import com.product.propose.global.utils.AccountFactory;
 import com.product.propose.global.utils.WikiFactory;
@@ -104,6 +104,17 @@ public class WikiMvcTest {
     }
 
     @Test
+    @DisplayName("위키 Page READ MVC TEST")
+    void readWikiPageTest() throws Exception {
+        // GIVEN - Default Use
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/wiki/read"+"?page=0&size=99"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
     @Order(3)
     @DisplayName("가격 추가 등록 MVC TEST")
     void registerPriceRecordTest() throws Exception {
@@ -162,13 +173,13 @@ public class WikiMvcTest {
         // GIVEN - INIT
 
         // WHEN
-        WikiResponse result = wikiRepository.findWikiResponseById(1L);
+        WikiSummaryResponse result = wikiRepository.readWikiResponseById(1L);
         List<Tag> tagGroup = result.getTagGroup();
 
         // THEN
         Assertions.assertThat(result)
-                .isNotNull().isOfAnyClassIn(WikiResponse.class)
-                .extracting(WikiResponse::getTitle).isInstanceOf(String.class);
+                .isNotNull().isOfAnyClassIn(WikiSummaryResponse.class)
+                .extracting(WikiSummaryResponse::getTitle).isInstanceOf(String.class);
         Assertions.assertThat(result.getTagGroup())
                 .isNotEmpty().hasSize(2);
     }

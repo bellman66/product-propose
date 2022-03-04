@@ -1,7 +1,7 @@
 package com.product.propose.domain.account.repository;
 
 import com.product.propose.domain.account.entity.aggregate.Account;
-import com.product.propose.domain.account.repository.extension.AccountRepositoryReadExtension;
+import com.product.propose.domain.account.repository.extension.AccountReadExtension;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.QueryHints;
@@ -16,7 +16,7 @@ import static org.hibernate.annotations.QueryHints.READ_ONLY;
  *   @Memo : Update , Delete를 위한 entity 반환
  **/
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long>, AccountRepositoryReadExtension {
+public interface AccountRepository extends JpaRepository<Account, Long>, AccountReadExtension {
 
     /**
     *   @Author : Youn

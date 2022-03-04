@@ -11,7 +11,7 @@ import java.util.List;
 *   @Summary : Return Read Only Query
 *   @Memo : Read 관련 처리를 대부분 담당.
 **/
-public interface AccountRepositoryReadExtension {
+public interface AccountReadExtension {
 
     InfoResponse readInfoById(Long accountId);
 

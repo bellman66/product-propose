@@ -4,17 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.PriceRecordRepository;
+import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.service.WikiService;
+import com.product.propose.domain.wiki.web.dto.data.integration.WikiPageData;
 import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.PriceUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiUpdateRequest;
-import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 import com.product.propose.global.annotation.CurrentAccount;
 import com.product.propose.global.api.RestApiController;
 import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.data.dto.PageResponse;
+import com.product.propose.global.data.dto.PaginationRequest;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +32,17 @@ import java.util.HashMap;
 @RequestMapping(value = "/api/v1/wiki", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WikiRestController extends RestApiController {
 
-    private static final int DEFAULT_PAGE_SIZE = 20;
-
     // Service
     private final WikiService wikiService;
+
     // Repository
+    private final WikiRepository wikiRepository;
     private final PriceRecordRepository priceRecordRepository;
 
-    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService, PriceRecordRepository priceRecordRepository) {
+    public WikiRestController(ObjectMapper objectMapper, WikiService wikiService, WikiRepository wikiRepository, PriceRecordRepository priceRecordRepository) {
         super(objectMapper);
         this.wikiService = wikiService;
+        this.wikiRepository = wikiRepository;
         this.priceRecordRepository = priceRecordRepository;
     }
 
@@ -74,7 +79,7 @@ public class WikiRestController extends RestApiController {
     @GetMapping("/{wikiId}/read")
     private ResponseEntity<String> readWikiInfo(@PathVariable Long wikiId) {
         // get WikiResponse
-        WikiResponse wikiSummary = wikiService.readWiki(wikiId);
+        WikiSummaryResponse wikiSummary = wikiService.readWiki(wikiId);
 
         // get Page PriceRecord
         PageResponse priceRecords = priceRecordRepository.readPageByWikiId(wikiId, PageRequest.of(0, DEFAULT_PAGE_SIZE));
@@ -82,6 +87,16 @@ public class WikiRestController extends RestApiController {
         return createRestResponse(new HashMap<>() {{
             put("summary", wikiSummary);
             put("priceRecords", priceRecords);
+        }});
+    }
+
+    @GetMapping("/read")
+    private ResponseEntity<String> readPage(@ModelAttribute @Valid PaginationRequest request) {
+        PageRequest page = PageRequest.of(request.getPage(), request.getSize());
+        PageResponse wikiPageResponse = wikiRepository.readWikiPageResponse(page);
+
+        return createRestResponse(new HashMap<>() {{
+            put("page", wikiPageResponse);
         }});
     }
 

@@ -1,12 +1,11 @@
 package com.product.propose.domain.wiki.repository.extension.impl;
 
-import com.product.propose.domain.wiki.repository.extension.PriceRecordRepositoryReadExtenstion;
+import com.product.propose.domain.wiki.repository.extension.PriceRecordReadExtenstion;
 import com.product.propose.domain.wiki.web.dto.response.PriceRecordResponse;
 import com.product.propose.global.data.dto.PageResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
@@ -16,11 +15,11 @@ import static com.product.propose.domain.wiki.entity.QPriceRecord.priceRecord;
 import static com.product.propose.domain.wiki.entity.aggregate.QWiki.wiki;
 
 
-public class PriceRecordRepositoryReadExtenstionImpl implements PriceRecordRepositoryReadExtenstion {
+public class PriceRecordReadExtenstionImpl implements PriceRecordReadExtenstion {
 
     private final JPAQueryFactory queryFactory;
 
-    public PriceRecordRepositoryReadExtenstionImpl(JPAQueryFactory jpaQueryFactory) {
+    public PriceRecordReadExtenstionImpl(JPAQueryFactory jpaQueryFactory) {
         this.queryFactory = jpaQueryFactory;
     }
 

@@ -7,7 +7,7 @@ import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
-import com.product.propose.domain.wiki.web.dto.response.WikiResponse;
+import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 import com.product.propose.domain.wiki.web.validator.assertion.WikiAssert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,6 @@ public class WikiServiceImpl implements WikiService {
         this.wikiRepository = wikiRepository;
     }
 
-
     @Override
     @Transactional
     public Wiki registerWiki(Long accountId, WikiCreateData createData) {
@@ -35,10 +34,10 @@ public class WikiServiceImpl implements WikiService {
     }
 
     @Override
-    public WikiResponse readWiki(Long targetId) {
+    public WikiSummaryResponse readWiki(Long targetId) {
         WikiAssert.exists(targetId);
 
-        return wikiRepository.findWikiResponseById(targetId);
+        return wikiRepository.readWikiResponseById(targetId);
     }
 
     @Override

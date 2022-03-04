@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WikiResponse {
+public class WikiSummaryResponse {
 
     // Wiki
     private String title;

@@ -28,8 +28,4 @@ public class WikiAssert extends CommonAssert {
     public static void nonExist(String title) {
         decideException(!wikiRepository.existsByTitle(title), ErrorCode.ALREADY_EXISTS_WIKI);
     }
-
-    public static void nonExist(Long wikiId) {
-        decideException(!wikiRepository.existsById(wikiId), ErrorCode.ALREADY_EXISTS_WIKI);
-    }
 }

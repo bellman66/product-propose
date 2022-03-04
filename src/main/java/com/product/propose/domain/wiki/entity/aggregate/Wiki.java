@@ -31,7 +31,6 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     private Long id;
 
     // Aggregate Id - 위키 수정 Account
-    @Column(name = "account_id")
     private Long accountId;
 
     @Column(name = "title", nullable = false)

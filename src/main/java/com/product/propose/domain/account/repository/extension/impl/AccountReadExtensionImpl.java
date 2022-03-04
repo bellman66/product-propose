@@ -5,7 +5,7 @@ import com.product.propose.domain.account.web.dto.response.InfoResponse;
 import com.product.propose.domain.account.web.dto.response.ProfileResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.product.propose.domain.account.repository.extension.AccountRepositoryReadExtension;
+import com.product.propose.domain.account.repository.extension.AccountReadExtension;
 import org.hibernate.annotations.QueryHints;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import static com.product.propose.domain.account.entity.QLinkedAuth.linkedAuth;
 import static com.product.propose.domain.account.entity.QUserProfile.userProfile;
 import static com.product.propose.domain.account.entity.aggregate.QAccount.account;
 
-public class AccountRepositoryReadExtensionImpl implements AccountRepositoryReadExtension {
+public class AccountReadExtensionImpl implements AccountReadExtension {
 
     private final JPAQueryFactory queryFactory;
 
-    public AccountRepositoryReadExtensionImpl(JPAQueryFactory jpaQueryFactory) {
+    public AccountReadExtensionImpl(JPAQueryFactory jpaQueryFactory) {
         this.queryFactory = jpaQueryFactory;
     }
 
