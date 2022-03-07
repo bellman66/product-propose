@@ -6,7 +6,6 @@ import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.PriceRecordRepository;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.service.WikiService;
-import com.product.propose.domain.wiki.web.dto.data.integration.WikiPageData;
 import com.product.propose.domain.wiki.web.dto.request.PriceRegisterRequest;
 import com.product.propose.domain.wiki.web.dto.request.PriceUpdateRequest;
 import com.product.propose.domain.wiki.web.dto.request.WikiRegisterRequest;
@@ -18,8 +17,8 @@ import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.data.dto.PageResponse;
 import com.product.propose.global.data.dto.PaginationRequest;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -91,13 +90,14 @@ public class WikiRestController extends RestApiController {
     }
 
     @GetMapping("/read")
-    private ResponseEntity<String> readPage(@ModelAttribute @Valid PaginationRequest request) {
+    private ResponseEntity<?> readPage(@ModelAttribute @Valid PaginationRequest request) {
         PageRequest page = PageRequest.of(request.getPage(), request.getSize());
         PageResponse wikiPageResponse = wikiRepository.readWikiPageResponse(page);
 
-        return createRestResponse(new HashMap<>() {{
-            put("page", wikiPageResponse);
-        }});
+//        return createRestResponse(new HashMap<>() {{
+//            put("page", wikiPageResponse);
+//        }});
+        return ResponseEntity.status(HttpStatus.OK).body(wikiPageResponse.getContent());
     }
 
     // ============================================  Update - Put  ====================================================
