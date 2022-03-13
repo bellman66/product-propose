@@ -18,10 +18,10 @@ import com.product.propose.global.data.dto.PageResponse;
 import com.product.propose.global.data.dto.PaginationRequest;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -73,6 +73,16 @@ public class WikiRestController extends RestApiController {
         }});
     }
 
+    @PostMapping(value = "{wikiId}/update/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    private ResponseEntity<String> registerWikiImage(@PathVariable Long wikiId,
+                                                @RequestPart MultipartFile image) {
+        // Wiki
+        Wiki result = wikiService.updateWikiImage(wikiId, image);
+        return createRestResponse(new HashMap<>() {{
+            put("result", result.getId());
+        }});
+    }
+
     // ============================================  Read - Get  ======================================================
 
     @GetMapping("/{wikiId}/read")
@@ -90,14 +100,11 @@ public class WikiRestController extends RestApiController {
     }
 
     @GetMapping("/read")
-    private ResponseEntity<?> readPage(@ModelAttribute @Valid PaginationRequest request) {
+    private ResponseEntity<String> readPage(@ModelAttribute @Valid PaginationRequest request) {
         PageRequest page = PageRequest.of(request.getPage(), request.getSize());
         PageResponse wikiPageResponse = wikiRepository.readWikiPageResponse(page);
 
-//        return createRestResponse(new HashMap<>() {{
-//            put("page", wikiPageResponse);
-//        }});
-        return ResponseEntity.status(HttpStatus.OK).body(wikiPageResponse.getContent());
+        return createRestResponse(wikiPageResponse.getContent());
     }
 
     // ============================================  Update - Put  ====================================================

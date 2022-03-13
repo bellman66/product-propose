@@ -9,8 +9,14 @@ import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
 import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 import com.product.propose.domain.wiki.web.validator.assertion.WikiAssert;
+import com.product.propose.global.utils.upload.ImageBBUploadUtil;
+import com.product.propose.global.utils.upload.UploadUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 @Service
@@ -18,9 +24,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class WikiServiceImpl implements WikiService {
 
     private final WikiRepository wikiRepository;
+    private final UploadUtils uploadUtils;
 
-    public WikiServiceImpl(WikiRepository wikiRepository) {
+    public WikiServiceImpl(WikiRepository wikiRepository, ImageBBUploadUtil imageBBUploadUtil) {
         this.wikiRepository = wikiRepository;
+        this.uploadUtils = imageBBUploadUtil;
+    }
+
+    @Override
+    public Wiki getTargetWiki(Long wikiId) {
+        Wiki wiki = wikiRepository.findWikiById(wikiId);
+        WikiAssert.exists(wiki);
+        return wiki;
     }
 
     @Override
@@ -44,8 +59,7 @@ public class WikiServiceImpl implements WikiService {
     @Transactional
     public Wiki addPriceRecord(Long wikiId, Long accountId, PriceRecordCreateForm priceRegisterData) {
         // Assert Exist Wiki
-        Wiki wiki = wikiRepository.findWikiById(wikiId);
-        WikiAssert.exists(wiki);
+        Wiki wiki = getTargetWiki(wikiId);
 
         // Register Price Record
         wiki.registerPriceRecord(accountId, priceRegisterData);
@@ -56,8 +70,7 @@ public class WikiServiceImpl implements WikiService {
     @Transactional
     public Wiki updateWiki(Long wikiId, WikiUpdateData wikiUpdateData) {
         // Get & Assertion
-        Wiki wiki = wikiRepository.findWikiById(wikiId);
-        WikiAssert.exists(wiki);
+        Wiki wiki = getTargetWiki(wikiId);
 
         // Update Wiki
         wiki.update(wikiUpdateData);
@@ -68,11 +81,27 @@ public class WikiServiceImpl implements WikiService {
     @Transactional
     public Wiki updatePriceRecord(Long wikiId, Long recordId, Long accountId, PriceUpdateData updateData) {
         // Get & Assertion
-        Wiki wiki = wikiRepository.findWikiById(wikiId);
-        WikiAssert.exists(wiki);
+        Wiki wiki = getTargetWiki(wikiId);
 
         // PriceRecord
         wiki.updatePriceRecord(recordId, accountId, updateData);
+        return wikiRepository.save(wiki);
+    }
+
+    @Override
+    public Wiki updateWikiImage(Long wikiId, MultipartFile image) {
+        Wiki wiki = getTargetWiki(wikiId);
+
+        // Upload Image
+        String url = null;
+        try {
+            url = uploadUtils.uploadImage(image);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        // Update Wiki Image
+        wiki.registerImage(url);
         return wikiRepository.save(wiki);
     }
 }

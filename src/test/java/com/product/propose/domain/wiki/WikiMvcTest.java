@@ -26,12 +26,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,6 +163,22 @@ public class WikiMvcTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization", "Bearer " + accessToken)
                         .content(objectMapper.writeValueAsString(wikiUpdateRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("위키 썸네일 업데이트 MVC TEST")
+    void putWikiImageTest() throws Exception {
+        // GIVEN
+        File file = new File("C:\\workspace\\product-propose\\src\\main\\resources\\static\\image\\170.jpeg");
+
+        // WHEN THEN
+        mvc.perform(MockMvcRequestBuilders.multipart("/api/v1/wiki/1/update/image")
+                        .file(new MockMultipartFile("image", new FileInputStream(file)))
+                        .header("Authorization", "Bearer " + accessToken)
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }

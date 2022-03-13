@@ -36,6 +36,9 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
     @OneToMany(mappedBy = "wiki", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<PriceRecord> priceRecordGroup = new ArrayList<>();
@@ -87,6 +90,10 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
                 .findFirst()
                 .orElseThrow(() -> new CommonException(ErrorCode.PRICE_RECORD_NOT_FOUND));
         target.update(updateData);
+    }
+
+    public void registerImage(String url) {
+        this.thumbnail = url;
     }
 
     // ============================================  ETC  ===================================================

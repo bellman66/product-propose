@@ -43,6 +43,8 @@ app:
   props:
     file:
       publicPath: INPUT-DATA
+    upload:
+      ImageApiKey: "99cecdea336a9e78e9a530abd4c15b82"
     jwt:
       secretkey: "TEMPLATE_SECRET_ENCRYPTED_KEY"
       issur: "TemplateIssur"

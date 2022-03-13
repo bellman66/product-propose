@@ -7,8 +7,6 @@ import com.product.propose.global.exception.dto.enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
-
 public class RestApiController {
 
     public static final int DEFAULT_PAGE_SIZE = 20;
@@ -20,19 +18,19 @@ public class RestApiController {
         this.objectMapper = objectMapper;
     }
 
-    protected ResponseEntity<String> createFailRestResponse(Map<String, Object> data) {
+    protected ResponseEntity<String> createFailRestResponse(Object data) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(convertToBodyStr(data));
     }
 
-    protected ResponseEntity<String> createRestResponse(Map<String, Object> data) {
+    protected ResponseEntity<String> createRestResponse(Object data) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(convertToBodyStr(data));
     }
 
-    private String convertToBodyStr(Map<String, Object> restApiResponse) {
+    private String convertToBodyStr(Object restApiResponse) {
         try {
             return objectMapper.writeValueAsString(restApiResponse);
         }
