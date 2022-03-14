@@ -1,9 +1,11 @@
 package com.product.propose.domain.wiki.entity.aggregate;
 
 import com.product.propose.domain.wiki.entity.PriceRecord;
+import com.product.propose.domain.wiki.entity.ProductImage;
 import com.product.propose.domain.wiki.entity.WikiTag;
 import com.product.propose.domain.wiki.entity.reference.Tag;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
+import com.product.propose.domain.wiki.web.dto.data.ProductImageCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.WikiCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
@@ -47,6 +49,10 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     @Builder.Default
     private List<WikiTag> wikiTagGroup = new ArrayList<>();
 
+    @OneToMany(mappedBy = "wiki", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<ProductImage> imageGroup = new ArrayList<>();
+
     private static Wiki create(Long accountId, WikiCreateForm createForm) {
         return Wiki.builder()
                 .accountId(accountId)
@@ -64,7 +70,7 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
         Wiki result = create(accountId, registerData.getWikiCreateForm());
 
         // 프라이스 등록
-        result.addPriceRecordGroup(PriceRecord.create(accountId, registerData.getPriceRecordCreateForm()));
+        result.registerPriceRecord(accountId, registerData.getPriceRecordCreateForm());
 
         // Event - Tag 등록
         result.eventWikiTagGroup(registerData.getTagGroup());
@@ -81,7 +87,20 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     *   @Param : PriceRecordCreateForm
     **/
     public void registerPriceRecord(Long accountId, PriceRecordCreateForm priceRecordCreateForm) {
-        addPriceRecordGroup(PriceRecord.create(accountId, priceRecordCreateForm));
+        PriceRecord priceRecord = PriceRecord.create(accountId, priceRecordCreateForm);
+        priceRecord.setWiki(this);
+        priceRecordGroup.add(priceRecord);
+    }
+
+    /**
+     *   @Author : Youn
+     *   @Summary : 물건 이미지 추가
+     *   @Param : PriceRecordCreateForm
+     **/
+    public void registerProductImage(ProductImageCreateForm createForm) {
+        ProductImage productImage = ProductImage.create(createForm);
+        productImage.setWiki(this);
+        imageGroup.add(productImage);
     }
 
     public void updatePriceRecord(Long recordId, Long accountId, PriceUpdateData updateData) {
@@ -92,16 +111,7 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
         target.update(updateData);
     }
 
-    public void registerImage(String url) {
-        this.thumbnail = url;
-    }
-
     // ============================================  ETC  ===================================================
-
-    private void addPriceRecordGroup(PriceRecord priceRecord) {
-        priceRecord.setWiki(this);
-        priceRecordGroup.add(priceRecord);
-    }
 
     // Tag 등록 이벤트 발행 로직
     private void eventWikiTagGroup(List<String> tagRegisterGroup) {

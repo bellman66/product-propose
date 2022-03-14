@@ -14,6 +14,8 @@ import com.product.propose.global.utils.kakao.dto.KakaoAccountInfoDto;
 import com.product.propose.global.utils.kakao.dto.deserializer.KakaoAccountInfoDeserializer;
 import com.product.propose.global.config.props.JwtProps;
 import com.product.propose.global.config.props.MailProps;
+import com.product.propose.global.utils.upload.dto.ImageInfoDto;
+import com.product.propose.global.utils.upload.dto.deserializer.ImageInfoDeserializer;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -90,17 +92,18 @@ public class AppConfig {
     // 해당 모듈을 통해 원하는 모양으로 변경
     @Bean
     public ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
         // 특정 모양으로 변경하기 위해 설정
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(BindingResult.class, new BindingResultSerializer());
-        module.addDeserializer(KakaoAccountInfoDto.class, new KakaoAccountInfoDeserializer());
+        SimpleModule module = new SimpleModule() {{
+            addSerializer(BindingResult.class, new BindingResultSerializer());
 
-        objectMapper.registerModule(module);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+            addDeserializer(KakaoAccountInfoDto.class, new KakaoAccountInfoDeserializer());
+            addDeserializer(ImageInfoDto.class, new ImageInfoDeserializer());
+        }};
+
+        return new ObjectMapper()
+                .registerModule(module)
+                .registerModule(new JavaTimeModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     private static class BindingResultSerializer extends JsonSerializer<BindingResult> {

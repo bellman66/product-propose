@@ -24,6 +24,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -172,7 +173,8 @@ public class WikiMvcTest {
     @DisplayName("위키 썸네일 업데이트 MVC TEST")
     void putWikiImageTest() throws Exception {
         // GIVEN
-        File file = new File("C:\\workspace\\product-propose\\src\\main\\resources\\static\\image\\170.jpeg");
+        ClassPathResource classPathResource = new ClassPathResource("/static/image/170.jpeg");
+        File file = classPathResource.getFile();
 
         // WHEN THEN
         mvc.perform(MockMvcRequestBuilders.multipart("/api/v1/wiki/1/update/image")

@@ -48,6 +48,9 @@ public enum ErrorCode {
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json",null),
     WRONG_PATH("9002", "Wrong Path",null),
     CONSTRAINT_PROCESS_FAIL("9003", "정보가 서로 일치하지 않습니다.",null),
+    FILE_IO_ERROR("9004", "파일 처리 중 문제가 발생하였습니다.", null),
+    API_PROCESS_NOT_NORMAL("9005", "API 처리 중 문제가 발생하였습니다.", null),
+    API_STATUS_NOT_OK("9006", "API CALL 결과 - Not 200", null),
 
     FAILED("9999", "Unexpected Error", null);
 
