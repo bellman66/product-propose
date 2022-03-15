@@ -35,6 +35,8 @@ public class ProductImage {
     @JoinColumn(name = "wiki_id")
     private Wiki wiki;
 
+    // ============================================  CREATE  ===================================================
+
     public static ProductImage create(ProductImageCreateForm createForm) {
         return ProductImage.builder()
                 .fileName(createForm.getFileName())
@@ -44,6 +46,8 @@ public class ProductImage {
                 .registerDateTime(createForm.getRegisterDateTime())
                 .build();
     }
+
+    // ============================================  ETC  ===================================================
 
     public void setWiki(Wiki wiki) {
         this.wiki = wiki;

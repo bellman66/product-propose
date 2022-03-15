@@ -67,26 +67,36 @@ public class Account extends AbstractAggregateRoot<Account> {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LinkedAuth> linkedAuthSet = new HashSet<>();
 
-    public static Account create(AccountCreateForm createForm) {
-        return Account.builder()
+    // ============================================  CREATE  ===================================================
+
+    /**
+    *   @Author : Youn
+    *   @Summary : MAIN - 계정 생성 ( Sign UP )
+    *   @Param : SignUpData
+    **/
+    public static Account create(SignUpData data) {
+        AccountCreateForm createForm = data.getAccountCreateForm();
+        Account account = Account.builder()
                 .email(createForm.getEmail())
                 .nickName(createForm.getName())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .exitedAt(null)
                 .build();
-    }
-
-    // Create User - SignUp
-    public static Account signUp(SignUpData data) {
-        Account account = create(data.getAccountCreateForm());
 
         account.setLinkedAuthSet(LinkedAuth.create(data.getLinkedAuthCreateForm()));
         account.setUserProfile(UserProfile.create(data.getUserProfileCreateForm()));
         return account;
     }
 
-    // Login User
+    // ============================================  READ  ===================================================
+
+    /**
+    *   @Author : Youn
+    *   @Summary : MAIN - 계정 확인 ( Login )
+    *   @Param : AccountType , String
+    *   @Memo : Type을 통해 Auth 를 일치시킴.
+    **/
     public void login(AccountType type, String password) {
         // Find Target Auth
         LinkedAuth targetAuth = linkedAuthSet.stream()
@@ -104,6 +114,14 @@ public class Account extends AbstractAggregateRoot<Account> {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    // ============================================  UPDATE  ===================================================
+
+    /**
+    *   @Author : Youn
+    *   @Summary : MAIN - 계정 업데이트
+    *   @Param : AccountUpdateForm
+    *   @Memo : 미구현
+    **/
     private void update(AccountUpdateForm accountUpdateForm) {
         this.nickName = accountUpdateForm.getNickName();
     }
@@ -113,10 +131,14 @@ public class Account extends AbstractAggregateRoot<Account> {
         setProfileInfo(profileUpdateData.getProfileUpdateForm());
     }
 
+    // ============================================  DELETE  ===================================================
     public void exit() {
         this.exitedAt = LocalDateTime.now();
     }
 
+    // ============================================  ETC  ===================================================
+
+    // 인증 확인용 JWT Token 반환
     public String getJwtToken() {
         return JwtUtil.encodeJwt(this.email);
     }
@@ -124,9 +146,6 @@ public class Account extends AbstractAggregateRoot<Account> {
     public boolean isExited() {
         return Objects.nonNull(this.exitedAt);
     }
-
-    // ============================================  ETC  ===================================================
-
     private void setLinkedAuthSet(LinkedAuth linkedAuth) {
         linkedAuth.setAccount(this);
         this.linkedAuthSet.add(linkedAuth);

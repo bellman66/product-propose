@@ -27,7 +27,7 @@ public class AccountFactory {
     }
 
     public static Account create() {
-        Account account = Account.signUp(getDefaultData());
+        Account account = Account.create(getDefaultData());
         setPersist(account);
 
         return account;

@@ -28,7 +28,7 @@ public class KakaoAuthServiceImpl implements AuthService {
     public Account signUp(SignUpData aData) {
         AccountAssert.nonExist(aData.getSignUpEmail());
 
-        Account result = Account.signUp(aData);
+        Account result = Account.create(aData);
         return accountRepository.save(result);
     }
 

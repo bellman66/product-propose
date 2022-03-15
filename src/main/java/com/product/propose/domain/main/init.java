@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Profile("dev")
+@Profile("local")
 public class init {
 
     private final DataDefault dataDefault;
@@ -50,7 +50,7 @@ public class init {
             }};
 
             WikiCreateData wikiCreateData = new WikiCreateData(wikiCreateForm, priceRecordCreateForm, tagGroup);
-            Wiki wiki = Wiki.registerWiki(1L, wikiCreateData);
+            Wiki wiki = Wiki.create(1L, wikiCreateData);
 
             em.persist(wiki);
         }

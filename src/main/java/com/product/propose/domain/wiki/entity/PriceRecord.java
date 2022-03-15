@@ -41,6 +41,8 @@ public class PriceRecord {
     @JoinColumn(name = "wiki_id")
     private Wiki wiki;
 
+    // ============================================  CREATE  ===================================================
+
     public static PriceRecord create(Long accountId, PriceRecordCreateForm createform) {
         return PriceRecord.builder()
                 .accountId(accountId)
@@ -50,6 +52,9 @@ public class PriceRecord {
                 .recordDate(LocalDateTime.now())
                 .build();
     }
+
+    // ============================================  UPDATE  ===================================================
+
 
     public void update(PriceUpdateData updateData) {
         this.originPrice = updateData.getOriginPrice();

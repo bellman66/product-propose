@@ -14,13 +14,9 @@ import com.product.propose.domain.wiki.web.validator.assertion.WikiAssert;
 import com.product.propose.global.utils.upload.ImageBBUploadUtil;
 import com.product.propose.global.utils.upload.UploadUtils;
 import com.product.propose.global.utils.upload.dto.ImageInfoDto;
-import org.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 
 @Service
@@ -48,7 +44,7 @@ public class WikiServiceImpl implements WikiService {
         WikiAssert.nonExist(createData.getWikiTitle());
 
         // 1. register
-        Wiki result = Wiki.registerWiki(accountId, createData);
+        Wiki result = Wiki.create(accountId, createData);
         return wikiRepository.save(result);
     }
 

@@ -19,11 +19,15 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
+    // ============================================  CREATE  ===================================================
+
     public static Tag create(String name) {
         return Tag.builder()
                 .name(name)
                 .build();
     }
+
+    // ============================================  ETC  ===================================================
 
     @Override
     public String toString() {

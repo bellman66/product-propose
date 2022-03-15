@@ -39,6 +39,8 @@ public class LinkedAuth {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    // ============================================  CREATE  ===================================================
+
     public static LinkedAuth create(LinkedAuthCreateForm createForm) {
         return LinkedAuth.builder()
                 .accountType(createForm.getAccountType())
@@ -47,9 +49,13 @@ public class LinkedAuth {
                 .build();
     }
 
+    // ============================================  READ  ===================================================
+
     public void checkPassword(String aPassword) {
         if (!PasswordUtil.matches(aPassword, this.password)) throw new CommonException(ErrorCode.LOGIN_PROCESS_PASSWORD_NOTMATCH);
     }
+
+    // ============================================  ETC  ===================================================
 
     public void setAccount(Account account) {
         this.account = account;

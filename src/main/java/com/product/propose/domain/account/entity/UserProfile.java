@@ -36,6 +36,8 @@ public class UserProfile {
     @Column(name = "phone_recv")
     private boolean phoneRecv;
 
+    // ============================================  CREATE  ===================================================
+
     public static UserProfile create(UserProfileCreateForm createForm) {
         return UserProfile.builder()
                 .userName(createForm.getUserName())
@@ -46,6 +48,8 @@ public class UserProfile {
                 .phoneRecv(false)
                 .build();
     }
+
+    // ============================================  UPDATE  ===================================================
 
     public void update(ProfileUpdateForm profileUpdateForm) {
         this.userName = profileUpdateForm.getUserName();

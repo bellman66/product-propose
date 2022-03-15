@@ -26,12 +26,16 @@ public class WikiTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
+    // ============================================  CREATE  ===================================================
+
     public static WikiTag create(Wiki wiki, Tag tag) {
         return WikiTag.builder()
                 .wiki(wiki)
                 .tag(tag)
                 .build();
     }
+
+    // ============================================  ETC  ===================================================
 
     public void setWiki(Wiki wiki) {
         this.wiki = wiki;

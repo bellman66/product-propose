@@ -29,7 +29,7 @@ public class WikiFactory {
     }
 
     public static Wiki create() {
-        Wiki wiki = Wiki.registerWiki(1L, getDefaultData());
+        Wiki wiki = Wiki.create(1L, getDefaultData());
         setPersist(wiki);
 
         return wiki;
@@ -37,7 +37,7 @@ public class WikiFactory {
 
 
     public static Wiki create(Long accountId) {
-        Wiki wiki = Wiki.registerWiki(accountId, getDefaultData());
+        Wiki wiki = Wiki.create(accountId, getDefaultData());
         setPersist(wiki);
 
         return wiki;

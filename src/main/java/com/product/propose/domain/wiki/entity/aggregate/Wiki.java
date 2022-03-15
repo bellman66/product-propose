@@ -53,32 +53,29 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
     @Builder.Default
     private List<ProductImage> imageGroup = new ArrayList<>();
 
-    private static Wiki create(Long accountId, WikiCreateForm createForm) {
-        return Wiki.builder()
-                .accountId(accountId)
-                .title(createForm.getTitle())
-                .build();
-    }
+    // ============================================  CREATE  ===================================================
 
     /**
     *   @Author : Youn
-    *   @Summary : Main - 위키 등록
+    *   @Summary : Main - 위키 생성 및 등록
     *   @Param : WikiCreateData
     *   @Memo : 태그의 경우 이벤틀 로직으로 구성 ( 리스너 참조 )
     **/
-    public static Wiki registerWiki(Long accountId, WikiCreateData registerData) {
-        Wiki result = create(accountId, registerData.getWikiCreateForm());
+    public static Wiki create(Long accountId, WikiCreateData registerData) {
+        // 1. Set Default Wiki
+        WikiCreateForm createForm = registerData.getWikiCreateForm();
+        Wiki result = Wiki.builder()
+                .accountId(accountId)
+                .title(createForm.getTitle())
+                .build();
 
-        // 프라이스 등록
-        result.registerPriceRecord(accountId, registerData.getPriceRecordCreateForm());
+        // 2. 프라이스 등록
+        PriceRecordCreateForm priceRecordCreateForm = registerData.getPriceRecordCreateForm();
+        result.registerPriceRecord(accountId, priceRecordCreateForm);
 
-        // Event - Tag 등록
+        // 3. Event - Tag 등록
         result.eventWikiTagGroup(registerData.getTagGroup());
         return result;
-    }
-
-    public void update(WikiUpdateData updateData) {
-        this.title = updateData.getTitle();
     }
 
     /**
@@ -101,6 +98,18 @@ public class Wiki extends AbstractAggregateRoot<Wiki> {
         ProductImage productImage = ProductImage.create(createForm);
         productImage.setWiki(this);
         imageGroup.add(productImage);
+    }
+
+    // ============================================  UPDATE  ===================================================
+
+    /**
+    *   @Author : Youn
+    *   @Summary : MAIN - 위키 업데이트
+    *   @Param : WikiUpdateData
+    *   @Memo : 미구현
+    **/
+    public void update(WikiUpdateData updateData) {
+        this.title = updateData.getTitle();
     }
 
     public void updatePriceRecord(Long recordId, Long accountId, PriceUpdateData updateData) {

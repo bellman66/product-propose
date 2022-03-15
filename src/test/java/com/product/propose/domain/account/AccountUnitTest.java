@@ -82,7 +82,7 @@ public class AccountUnitTest {
         LinkedAuthCreateForm linkedAuthCreateForm = new LinkedAuthCreateForm(AccountType.PASSWORD, "PASSWORD");
         UserProfileCreateForm userProfileCreateForm = new UserProfileCreateForm("UserName", "01000001111", "06777", "Test Address");
         SignUpData signUpData = new SignUpData(accountCreateForm, linkedAuthCreateForm, userProfileCreateForm);
-        Account returnAccount = Account.signUp(signUpData);
+        Account returnAccount = Account.create(signUpData);
 
         Mockito.when(accountRepository.existsByEmailAndExitedAtIsNull(any(String.class))).thenReturn(true);
         Mockito.when(accountRepository.findAuthByEmail(any(String.class))).thenReturn(returnAccount);
