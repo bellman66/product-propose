@@ -39,8 +39,7 @@ public enum ErrorCode {
     IAMPORT_CHECKOUT_CANCEL_FAIL("5002", "Iamport Checkout Cancel Fail", "/"),
 
     // file path (6000)
-    FILE_PATH_NOT_FOUND("6001", "File Path Not Found",null),
-    GOOGLE_DRIVE_FILE_PROCESS_FAIL("6002", "Failed To Add Files To Google Drive", null),
+    FILE_PATH_NOT_FOUND("6001", "파일이 존재하지 않습니다.",null),
     AMAZON_S3_FILE_UPLOAD_FAIL("6003", "파일 업로드에 실패했습니다.", null),
     AMAZON_S3_FILE_DELETE_FAIL("6004", "파일 삭제에 실패했습니다.", null),
 

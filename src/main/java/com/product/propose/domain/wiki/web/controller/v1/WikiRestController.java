@@ -73,11 +73,11 @@ public class WikiRestController extends RestApiController {
         }});
     }
 
-    @PostMapping(value = "{wikiId}/update/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{wikiId}/update/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     private ResponseEntity<String> registerWikiImage(@PathVariable Long wikiId,
-                                                @RequestPart MultipartFile image) {
+                                                @RequestPart MultipartFile[] images) {
         // Wiki
-        Wiki result = wikiService.updateWikiImage(wikiId, image);
+        Wiki result = wikiService.updateWikiImage(wikiId, images);
         return createRestResponse(new HashMap<>() {{
             put("result", result.getId());
         }});

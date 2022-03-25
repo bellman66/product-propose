@@ -22,5 +22,5 @@ public interface WikiService {
 
     Wiki updatePriceRecord(Long wikiId, Long recordId, Long accountId, PriceUpdateData priceUpdateData);
 
-    Wiki updateWikiImage(Long wikiId, MultipartFile image);
+    Wiki updateWikiImage(Long wikiId, MultipartFile[] image);
 }

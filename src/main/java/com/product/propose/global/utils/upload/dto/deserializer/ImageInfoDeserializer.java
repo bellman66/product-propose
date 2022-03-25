@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import static com.product.propose.global.utils.json.JsonNodeUtil.getNodeValueWithNull;
+
 public class ImageInfoDeserializer extends StdDeserializer<ImageInfoDto> {
 
     protected ImageInfoDeserializer(Class<?> vc) {
@@ -33,13 +35,14 @@ public class ImageInfoDeserializer extends StdDeserializer<ImageInfoDto> {
         final boolean success = treeNode.get("success").asBoolean(false);
         CommonAssert.isTrue(success, ErrorCode.API_STATUS_NOT_OK);
 
-        final String filename = rootNode.get("image").get("filename").asText("");
-        final String originImgUrl = rootNode.get("image").get("url").asText("");
-        final String mediumImgUrl = rootNode.get("medium").get("url").asText("");
-        final String thumbnail = rootNode.get("thumb").get("url").asText("");
+        final String filename = getNodeValueWithNull(String.class, rootNode,"image", "filename");
+        final String originImgUrl = getNodeValueWithNull(String.class, rootNode,"image", "url");
+        final String mediumImgUrl = getNodeValueWithNull(String.class, rootNode,"medium", "url");
+        final String thumbnail = getNodeValueWithNull(String.class, rootNode,"thumb", "url");
 
-        Instant time = new Date(rootNode.get("time").asLong()).toInstant();
-        final LocalDateTime registerDateTime = LocalDateTime.ofInstant(time, ZoneId.systemDefault());
+//        Instant time = new Date(searchWithNull(rootNode, "time").asLong(0)).toInstant();
+//        final LocalDateTime registerDateTime = LocalDateTime.ofInstant(time, ZoneId.of("Asia/Seoul"));
+        final LocalDateTime registerDateTime = LocalDateTime.now();
 
         return ImageInfoDto.builder()
                 .success(success)

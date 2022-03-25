@@ -11,12 +11,19 @@ import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
 import com.product.propose.domain.wiki.web.dto.mapper.WikiMapper;
 import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
 import com.product.propose.domain.wiki.web.validator.assertion.WikiAssert;
+import com.product.propose.global.data.assertion.CommonAssert;
+import com.product.propose.global.exception.dto.enums.ErrorCode;
 import com.product.propose.global.utils.upload.ImageBBUploadUtil;
 import com.product.propose.global.utils.upload.UploadUtils;
 import com.product.propose.global.utils.upload.dto.ImageInfoDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 
 @Service
@@ -32,6 +39,7 @@ public class WikiServiceImpl implements WikiService {
     }
 
     @Override
+    @Transactional
     public Wiki getTargetWiki(Long wikiId) {
         Wiki wiki = wikiRepository.findWikiById(wikiId);
         WikiAssert.exists(wiki);
@@ -90,15 +98,15 @@ public class WikiServiceImpl implements WikiService {
 
     @Override
     @Transactional
-    public Wiki updateWikiImage(Long wikiId, MultipartFile image) {
+    public Wiki updateWikiImage(Long wikiId, MultipartFile[] images) {
+        CommonAssert.isTrue(!ObjectUtils.isEmpty(images), ErrorCode.FILE_PATH_NOT_FOUND);
         Wiki wiki = getTargetWiki(wikiId);
 
         // Upload Image
-        ImageInfoDto imageInfo = uploadUtils.uploadImage(image);
-        ProductImageCreateForm createForm = WikiMapper.INSTANCE.ImageInfoToProductImage(imageInfo);
-
-        // Update Wiki Image
-        wiki.registerProductImage(createForm);
+        Arrays.stream(images)
+                .map(uploadUtils::uploadImage)
+                .map(WikiMapper.INSTANCE::ImageInfoToProductImage)
+                .forEach(wiki::registerProductImage);
         return wikiRepository.save(wiki);
     }
 }
