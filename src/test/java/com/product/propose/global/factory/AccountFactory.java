@@ -1,4 +1,4 @@
-package com.product.propose.global.utils;
+package com.product.propose.global.factory;
 
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;

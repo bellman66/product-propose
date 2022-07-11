@@ -1,7 +1,7 @@
 package com.product.propose.example;
 
 import com.product.propose.global.config.TestConfig;
-import com.product.propose.global.utils.AccountFactory;
+import com.product.propose.global.factory.AccountFactory;
 import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.repository.AccountRepository;
 import org.junit.jupiter.api.Test;

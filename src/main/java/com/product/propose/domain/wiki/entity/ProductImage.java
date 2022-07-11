@@ -18,6 +18,9 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "priority")
+    private int priority;
+
     @Column(name = "file_name")
     private String fileName;
 

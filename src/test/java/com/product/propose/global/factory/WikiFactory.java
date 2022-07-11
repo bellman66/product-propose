@@ -1,4 +1,4 @@
-package com.product.propose.global.utils;
+package com.product.propose.global.factory;
 
 import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.entity.embedded.SaleWay;

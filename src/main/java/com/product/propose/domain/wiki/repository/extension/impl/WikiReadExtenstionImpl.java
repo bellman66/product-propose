@@ -1,6 +1,7 @@
 package com.product.propose.domain.wiki.repository.extension.impl;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.product.propose.domain.wiki.entity.QProductImage;
 import com.product.propose.domain.wiki.repository.extension.WikiReadExtenstion;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiPageData;
 import com.product.propose.domain.wiki.web.dto.response.WikiSummaryResponse;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.product.propose.domain.wiki.entity.QPriceRecord.priceRecord;
+import static com.product.propose.domain.wiki.entity.QProductImage.productImage;
 import static com.product.propose.domain.wiki.entity.QWikiTag.wikiTag;
 import static com.product.propose.domain.wiki.entity.aggregate.QWiki.wiki;
 import static com.product.propose.domain.wiki.entity.reference.QTag.tag;
@@ -65,10 +67,12 @@ public class WikiReadExtenstionImpl implements WikiReadExtenstion {
                         wiki.title,
                         priceRecord.accountId,
                         priceRecord.originPrice,
-                        priceRecord.salePrice
+                        priceRecord.salePrice,
+                        productImage.thumbnail
                 ))
                 .from(wiki)
                 .innerJoin(wiki.priceRecordGroup, priceRecord)
+                .innerJoin(wiki.imageGroup, productImage)
                 .where(priceRecord.recordDate.between(currentDate, currentDate.plusDays(1)));
 
         List<WikiPageData> content = target

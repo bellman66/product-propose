@@ -4,7 +4,6 @@ import com.product.propose.domain.wiki.entity.aggregate.Wiki;
 import com.product.propose.domain.wiki.repository.WikiRepository;
 import com.product.propose.domain.wiki.service.WikiService;
 import com.product.propose.domain.wiki.web.dto.data.PriceRecordCreateForm;
-import com.product.propose.domain.wiki.web.dto.data.ProductImageCreateForm;
 import com.product.propose.domain.wiki.web.dto.data.integration.PriceUpdateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiCreateData;
 import com.product.propose.domain.wiki.web.dto.data.integration.WikiUpdateData;
@@ -15,15 +14,12 @@ import com.product.propose.global.data.assertion.CommonAssert;
 import com.product.propose.global.exception.dto.enums.ErrorCode;
 import com.product.propose.global.utils.upload.ImageBBUploadUtil;
 import com.product.propose.global.utils.upload.UploadUtils;
-import com.product.propose.global.utils.upload.dto.ImageInfoDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 
 @Service

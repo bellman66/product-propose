@@ -1,7 +1,6 @@
 package com.product.propose.domain.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.product.propose.domain.account.entity.aggregate.Account;
 import com.product.propose.domain.account.entity.enums.AccountType;
 import com.product.propose.domain.account.web.dto.data.*;
 import com.product.propose.domain.account.web.dto.data.integration.ProfileUpdateData;
@@ -9,28 +8,17 @@ import com.product.propose.domain.account.web.dto.data.integration.SignUpData;
 import com.product.propose.domain.account.web.dto.request.LoginRequest;
 import com.product.propose.domain.account.web.dto.request.ProfileUpdateRequest;
 import com.product.propose.domain.account.web.dto.request.SignUpRequest;
-import com.product.propose.global.utils.AccountFactory;
+import com.product.propose.global.factory.AccountFactory;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.validation.constraints.NotNull;
 
 @Transactional
 @SpringBootTest

@@ -5,7 +5,11 @@ import java.util.Objects;
 
 public class JsonNodeUtil {
 
-    public static <T> T getNodeValueWithNull(Class<T> returnType, JsonNode target, String ...fieldNames) {
+    public enum ReturnType {
+        STRING, LONG, BOOLEAN
+    }
+
+    public static <T> T getNodeValueWithNull(ReturnType returnType, JsonNode target, String ...fieldNames) {
         JsonNode jsonNode = searchWithNull(target, fieldNames);
         return (T) getTypeValue(jsonNode, returnType);
     }
@@ -23,19 +27,17 @@ public class JsonNodeUtil {
         return result;
     }
 
-    private static Object getTypeValue(JsonNode aTarget, Class<?> aClass) {
+    private static Object getTypeValue(JsonNode aTarget, ReturnType returnType) {
         // Assert - Json Node
-        if (isNullOrEmpty(aTarget)) return null;
+        if (isNull(aTarget)) return null;
 
-        switch (aClass.getSimpleName()) {
-            case "String":
+        switch (returnType) {
+            case STRING:
                 return aTarget.asText();
-            case "Long":
+            case LONG:
                 return aTarget.asLong();
-//            case "LocalDateTime":
-//                Instant time = new Date(searchWithNull(rootNode, "time").asLong(0)).toInstant();
-//                final LocalDateTime registerDateTime = LocalDateTime.ofInstant(time, ZoneId.of("Asia/Seoul"));
-//                return
+            case BOOLEAN :
+                return aTarget.asBoolean(false);
             default:
                 break;
         }
@@ -46,11 +48,7 @@ public class JsonNodeUtil {
         return target.has(fieldName) ? target.get(fieldName) : null;
     }
 
-    private static boolean isNullOrEmpty(JsonNode target) {
-        return Objects.isNull(target) || target.isNull() || target.isEmpty();
-    }
-
-    private static String getTextWithBlank(JsonNode target) {
-        return target.asText();
+    private static boolean isNull(JsonNode target) {
+        return Objects.isNull(target) || target.isNull();
     }
 }

@@ -15,4 +15,6 @@ public class WikiPageData {
     private Long accountId;
     private int originPrice;
     private int salePrice;
+
+    private String thumbnail;
 }

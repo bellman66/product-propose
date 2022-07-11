@@ -1,6 +1,6 @@
 package com.product.propose.example;
 
-import com.product.propose.global.utils.AccountFactory;
+import com.product.propose.global.factory.AccountFactory;
 import com.product.propose.domain.account.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
